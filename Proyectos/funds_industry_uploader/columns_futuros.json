@@ -1,0 +1,16 @@
+{  
+   "Run Fondo":"Run_Fondo",
+   "Nombre Fondo":"Nombre_Fondo",
+   "FFM_6040111":"Activo_Objeto",
+   "FFM_6040112":"Tipo_Instrumento",
+   "FFM_6040113":"Unidad_Cotizacion",
+   "FFM_6040114":"Fec_Vcto",
+   "FFM_6040115":"Moneda_Liquidacion",
+   "FFM_6040116":"Pais_Transaccion",
+   "FFM_6040200":"Compra/Venta",
+   "FFM_6040300":"Unidades_Nominales_Totales",
+   "FFM_6040400":"Precio_Futuro",
+   "FFM_6040500":"Monto_Comprometido",
+   "FFM_6040600":"Valoriz_Cierre"
+}
+

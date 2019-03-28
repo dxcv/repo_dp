@@ -1,0 +1,771 @@
+$(document).ready(function () {
+	if ((document.URL.indexOf("/demo/r?") != -1 && showInteractiveCharts == 'true') || (document.URL.indexOf("/r?") != -1 && interactiveChartsEnable == 'true' && showInteractiveCharts == 'true')) {
+		$('.interactive-chart').attr('title', 'Interactive');
+		$(document.body).on("click", '.interactive-chart', function () {
+			var chart = $(this).find(".interactive-chart");
+			var id;
+			var popupUI;
+			if (chart != null) {
+				id = $(this).attr('id');
+			}
+			var table;
+			var popupBody = createChartcontainer(id);
+			if (chart != null) {
+				$('html').addClass('overlay-c');
+				var e = returnParentTable(id);
+				if (e != null) {
+					table = $(e).clone()[0];
+					$(popupBody).insertAfter($(table).find("img"));
+					$(table).find("img").remove();
+					popupUI = createpopupTemplate(id, table.innerHTML);
+				}
+			}
+			$("#popuptemplate").html($(popupUI).html());
+			setCentertoScreen();
+			$("#popuptemplate").css("visibility", "visible");
+			Draw(id, bodyProductId);
+			$("#" + id).addClass('visible');
+			$("#popuptemplate").removeClass('hidepopup');
+
+			$("#popuptemplate").addClass('transitioning');
+		});
+		$('.popup-overlay-interactive').click(function () {
+			clearPopupInteractive();
+		});
+
+	}
+});
+function returnParentTable(id) {
+	var table;
+	var tables = $("table", document.body);
+	var length = tables.length;
+	var i;
+	var chartid;
+	for (i = 0; i < length; i++) {
+		var img = $(tables[i]).find("img");
+		if (img != null) {
+			chartid = img.attr("id");
+			if (chartid == id) {
+				var table = $(img).parentsUntil(img, "table");
+				var len = table.length;
+				if (len == 1) {
+					return table[0]
+				}
+				else {
+					for (j = 0; j < len; j++) {
+						img = $(table[j]).find("img");
+						if (img != null) {
+							chartid = img.attr("id");
+							if (chartid == id) return table[j];
+						}
+					}
+				}
+
+			}
+		}
+	}
+}
+function clearPopup() {
+	$('.popup.visible').addClass('transitioning').removeClass('visible');
+	$('html').removeClass('overlay-c');
+	setTimeout(function () {
+		$('.popup').removeClass('transitioning');
+	}, 200);
+
+}
+function createpopupTemplate(id, htmlstring) {
+	id = id + 'interactive';
+	var instruction = "<ul><li>Select chart area to zoom data points.</li></ul>"
+	var content = "<html><body><div class='popup'><div class='toast' style='display:none'>" + instruction + "</div><div class='popup-body' style='padding:4pt'><a id='closePopupInteractive' href='javascript:clearPopupInteractive();' class='closePopupInteractive'>X</a><span class='popup-exit'></span>" + htmlstring + "</div></div></body></html>";
+	return content;
+}
+function createErrorWindow(message) {
+	var content = "<html><body><div class='popup'><div class='popup-body' style='padding:4pt'><span class='popup-exit'></span><p style='font-weight:bold;color:#de1c1c;font-size:10pt'>Error</p><p style='font-size:8pt'>" + message + "</p></div></div></body></html>";
+	return content;
+}
+function createChartcontainer(id) {
+	id = id + 'interactive';
+	var content = "<div class='popup-content' id=" + id + "><div style='background:url(/RLWebReports-theme/images/progress_bar/loading_animation.gif) no-repeat;height:52px;width:150px;position:absolute;left:50%;top:45%'></div></div>";
+	return content;
+}
+function Draw(id, productId) {
+	var serverid = "/word/charts/" + id;
+	var xmlhttp = new XMLHttpRequest();
+	var url = interactiveChartSeriesUrl + "&productId=" + productId + "&chartId=" + id;
+	console.log("calling service ==>> " + url);
+	xmlhttp.onreadystatechange = function () {
+		if (xmlhttp.readyState == 4) {
+			if (xmlhttp.status == 200) {
+				var charts = JSON.parse(xmlhttp.responseText);
+				var cc = xmlhttp.response;
+				if (cc == "null") {
+					showError(id + 'interactive', "Unable to get data");
+				}
+				else {
+					charts.renderTo = id + 'interactive';
+					drawChart(charts);
+					setCentertoScreen();
+					showToast(charts);
+					window.addEventListener("resize", setCentertoScreen);
+				}
+			} else if (xmlhttp.status == 500) {
+				showError(id + 'interactive', xmlhttp.responseText);
+			}
+		}
+	}
+	xmlhttp.open("GET", url, true);
+	xmlhttp.send();
+}
+function showError(id, message) {
+	$("#popuptemplate").html(createErrorWindow(message));
+}
+function drawChart(val) {
+	var chart1 = new Highcharts.Chart({
+		chart: {
+			renderTo: val.renderTo,
+			zoomType: 'xy',
+			alignTicks: false
+			//backgroundColor: '#ffffff'
+		},
+		style: { fontFamily: 'Arial Narrow', fontSize: '12pt', },
+		title: { text: val.yAxisTitle },
+		subtitle: { text: '' },
+		plotOptions: {
+			pie: {
+				allowPointSelect: true,
+				cursor: 'pointer',
+				dataLabels: {
+					enabled: true,
+					format: '<b>{point.name}</b>: {point.percentage:.1f} %',
+					distance: 5
+				}
+			},
+			column: {
+				pointPadding: 0.2, borderWidth: 0, width: '3px',
+				tooltip: {
+					pointFormat: '{series.name}:<b>{point.y}</b>'
+				},
+				stacking: val.stacking
+			},
+			line: {
+				pointPadding: 0.2, borderWidth: 0, width: '3px',
+				marker: {
+					enabled: false
+				},
+			},
+			area: {
+				stacking: val.stacking
+			},
+			series: {
+				turboThreshold: 5000,
+
+				dataLabels: {
+					formatter: function () {
+						var objThis = this;
+						if (!(objThis.series.type == "area" || val.stacking != undefined)) {
+							var formatter = objThis.series.userOptions.dataLabels.DataLabelFormat;
+							return formatyaxisLabel(this.y, objThis.series.userOptions.dataLabels.DataLabelFormat);
+						}
+					},
+					useHTML: true,
+					style: { "color": "#000", "fontSize": "10px", "fontWeight": "bold", "textOutline": "1px #000" }
+				}
+			}
+		},
+		// Yaxis
+		yAxis: [{
+			lineColor: '#000000',
+			lineWidth: '1',
+			max: val.yAxis[0].max == 0 || val.yAxis[0].max == undefined ? null : val.yAxis[0].max,
+			min: setYaxisMinValue(val, true, val.yAxis[0]),
+			gridLineDashStyle: 'Dot',
+			gridLineColor: '#000000',
+			gridLineWidth: val.yAxis[0].gridline ? 1 : 0,
+			tickInterval: val.yAxis[0].tickInterval,
+			tickPixelInterval: val.yAxis[0].tickInterval == undefined ? 57 : null,
+			minorGridLineWidth: '0',
+			minorTickWidth: '2px',
+			tickColor: '#000000',
+			tickWidth: 1,
+			minorTickColor: '#000000',
+			endOnTick: true,
+			startOnTick: true,
+			labels: {
+				formatter: function () {
+					return formatyaxisLabel(this.value, val.yAxis[0].formatter);
+				}
+			},
+			title: {
+				text: val.yAxis[0].title
+			},
+			plotLines: [{
+				color: '#000000',
+				width: 0.25,
+				value: 0
+			}],
+			crosshair: {
+				color: '#126222',
+				dashStyle: 'Solid',
+				width: 0.25
+			},
+			reversed: val.yAxis[0].reversed,
+			stackLabels: {
+				enabled: true,
+				formatter: function () {
+					return stackLabelformatter(this, val);
+				}
+			}
+		},
+		{
+			lineColor: '#000000',
+			lineWidth: val.dualYaxis ? '1' : '0',
+			max: val.yAxis[1].max == 0 || val.yAxis[1].max == undefined ? null : val.yAxis[1].max,
+			min: setYaxisMinValue(val, false, val.yAxis[1]),
+			gridLineDashStyle: 'Dot',
+			gridLineColor: '#000000',
+			gridLineWidth: val.yAxis[1].gridline ? 1 : 0,
+			tickInterval: val.yAxis[1].tickInterval,
+			tickPixelInterval: val.yAxis[1].tickInterval == undefined ? 57 : null,
+			minorGridLineWidth: '0',
+			minorTickWidth: '2px',
+			tickColor: '#000000',
+			tickWidth: 1,
+			minorTickColor: '#000000',
+			endOnTick: true,
+			startOnTick: true,
+			opposite: true,
+			visible: val.dualYaxis,
+			labels: {
+				formatter: function () {
+					if (val.dualYaxis == undefined || val.dualYaxis == false) {
+						if (val.series[0].yAxis != undefined && val.series[0].yAxis != 0) {
+							return formatyaxisLabel(this.value, val.yAxis[val.series[0].yAxis].formatter);
+						}
+						return null;
+					}
+					else {
+						return formatyaxisLabel(this.value, val.yAxis[1].formatter);
+					}
+				}
+			},
+			title: {
+				text: val.yAxis[1].title
+			},
+			plotLines: [{
+				color: '#000000',
+				width: 0.25,
+				value: 0
+			}],
+			crosshair: {
+				color: '#126222',
+				dashStyle: 'Solid',
+				width: 0.25
+			},
+			reversed: val.yAxis[1].reversed
+		}],
+		xAxis: [{
+			categories: val.xAxis.type != "datetime" ? val.xAxis.category : null,
+			type: val.xAxis.type,
+			min: val.xAxis.min,
+			max: val.xAxis.max,
+			reversed: false,
+			showEmpty: true,
+			startOnTick: true,
+			endOnTick: false,
+			tickColor: '#000000',
+			tickWidth: 1,
+			lineColor: '#000000',
+			lineWidth: '1',
+			minorTickColor: '#000000',
+			tickPositioner: function (min, max) {
+				var ticks = this.tickPositions;
+				//var ticksCopy =  jQuery.extend( [], this.tickPositions);
+				if (val.xAxis.type == 'datetime') {
+					var minpointstart = 0;
+					if (val.xAxis.min != undefined) {
+						minpointstart = val.xAxis.min;
+					}
+					else {
+						for (var i = 0; i < val.series.length; i++) {
+							var seriespointstart = seriesStartPoint(val.series[i]);
+							if (minpointstart == 0 || minpointstart > seriespointstart) {
+								minpointstart = seriespointstart;
+							}
+
+						}
+					}
+					if (minpointstart >= ticks[0]) {
+						var tickDifference = minpointstart - ticks[0];
+						var adjustedtickdifference = tickDifference - (totalLeapDays(getDate(ticks[0]), getDate(minpointstart)) * 86400000);
+						var actualInterval = isNaN(this.tickInterval) ? ticks[2] - ticks[1] : this.tickInterval;
+						//var monthInterval = getDate(ticks[2]).getMonth() - getDate(ticks[1]).getMonth();
+						var monthInterval = numberofmonths(getDate(ticks[2]), getDate(ticks[1]));
+						if (!isNaN(tickDifference) && tickDifference != 0) {
+							for (var i = 0; i < ticks.length; i++) {
+
+
+								if (tickDifference != 0) {
+									if (i == 0) {
+										ticks[i] = ticks[i] + tickDifference;
+									}
+									else {
+										//for  greater than year
+										if (actualInterval >= 31536000000) {
+											ticks[i] = ticks[i] + adjustedtickdifference;
+											var currentTickdate = getDate(ticks[i]);
+											var previousTickdate = getDate(ticks[i] - adjustedtickdifference);
+											var total = totalLeapDays(previousTickdate, currentTickdate);
+											ticks[i] = ticks[i] + (total * 86400000);
+										}
+											//for interval less than year and greater than month
+										else if (actualInterval >= 2332800000) {
+											var date = getDate(ticks[0]).getDate();
+											var actualMonth = getDate(ticks[0]).getMonth();
+											var monthNumber = getDate(ticks[i - 1]).getMonth() + monthInterval;
+											var year = getDate(ticks[i - 1]).getFullYear();
+											if (monthNumber > 11) {
+												monthNumber = monthNumber - 12;
+												year = year + 1;
+											}
+											if (date > 28) {
+												var actualDate = getMothDate(date, monthNumber, getDate(ticks[i]).getFullYear(), actualMonth);
+											}
+											else {
+												actualDate = date;
+											}
+											var offsetDate = new Date(year, monthNumber, actualDate, 0, 0, 0, 0);
+											var _userOffset = (offsetDate.getTimezoneOffset() - 300) * 60 * 1000;
+											ticks[i] = offsetDate.getTime() - _userOffset;
+										}
+											//for  greater than month
+										else {
+											ticks[i] = ticks[i - 1] + actualInterval
+										}
+									}
+								}
+
+							}
+						}
+					}
+
+				}
+				for (var i = 0; i < ticks.length; i++) {
+					if (ticks[i] > max) {
+						ticks.splice(i, 1);
+					}
+				}
+				return ticks;
+			},
+			title: {
+				text: val.xAxis.Title
+			},
+			tickInterval: val.xAxis.interval,
+			tickPixelInterval: val.xAxis.interval == undefined ? 50 : null,
+			labels:
+				  {
+				  	formatter: function () {
+				  		return formatxAxisLabel(this.value, val.xAxis.type, val.xAxis.dateFormat)
+				  	},
+				  	overflow: 'justify',
+				  	rotation: val.xAxis.rotation
+				  },
+			crosshair: {
+				color: '#126222',
+				dashStyle: 'Solid',
+				width: 0.25
+			},
+			reversed: val.xAxis.reversed
+			//This value has to be set in the Word Chart's "Format Axis" - Min value has to be set and Interval days/months/years options
+			//,units: [['millisecond', [val.xAxis.interval]]]
+		}],
+		credits: { enabled: false },
+		series: val.series,
+		drilldown: val.drilldown,
+		legend: {
+			enabled: val.legendVisible
+		},
+		tooltip: {
+			xDateFormat: "%Y",
+			dateTimeLabelFormats: "%Y",
+			headerFormat: '',
+			borderColor: '#000000',
+			borderWidth: 0.75,
+			pointFormatter: function () {
+				var index = typeof (this.series.yAxis) == 'undefined' ? 0 : this.series.yAxis.side;
+				if (this.series.type.toLowerCase() == 'pie') {
+					var ypercentage = this.percentage;
+					ypercentage = Highcharts.numberFormat(ypercentage, 1);
+					return '<b>' + this.name + ': ' + ypercentage + '%</b>'
+				}
+				return tooltipFormatter(this.category, this.y, val, this.name, this.series.name, index);
+			}
+		}
+	});
+
+	//if the chart has negative values in y Axis or the yAxis is reversed - QC 10831
+	if (primaryYhasNegative(chart1)) {
+		chart1.xAxis[0].update({
+			lineWidth: '0'
+		});
+		chart1.yAxis[0].update({
+			plotLines: [{
+				color: 'black',
+				width: 1,
+				value: 0,
+				zIndex: 8               // Since the min ZIndex of most of chart elements is 7
+			}]
+		});
+	}
+
+	else if (primaryYReversed(chart1)) {
+		chart1.xAxis[0].update({
+			opposite: true
+		});
+	}
+}
+
+function seriesStartPoint(series) {
+	for (var i = 0; 1 < series.data.length; i++) {
+		if (series.data[i].x != undefined) {
+			return series.data[i].x;
+		}
+	}
+	return undefined;
+}
+
+function numberofmonths(to, from) {
+	var months = to.getMonth() - from.getMonth() + (12 * (to.getFullYear() - from.getFullYear()));
+	if (to.getDate() < from.getDate()) {
+		months--;
+	}
+	return months;
+}
+function getMothDate(day, month, year, actualMonth) {
+	var leapYear = isLeapYear(year);
+	var isLastDay = isLastDayOfMonth(day, actualMonth, leapYear)
+	if (month == 1) {
+		var changedDay = leapYear ? 29 : 28;
+		return changedDay;
+	}
+	else if (month == 3 || month == 5 || month == 8 || month == 10) {
+		if (isLastDay) {
+			return 30;
+		}
+		else {
+			return day;
+		}
+
+	}
+	else {
+		if (isLastDay) {
+			return 31;
+		}
+		return day;
+	}
+
+}
+function isLastDayOfMonth(day, month, isLeapYear) {
+	if (month == 1 && ((isLeapYear && day == 29) || (!isLeapYear & day == 28))) {
+		return true
+	}
+	else if ((month == 3 || month == 5 || month == 8 || month == 10) && day == 30) {
+		return true;
+	}
+	else if ((month == 0 || month == 2 || month == 4 || month == 6 || month == 7 || month == 9 || month == 11) && day == 31) {
+		return true
+	}
+	else {
+		return false;
+	}
+}
+
+function getDate(ticks) {
+	var dt = new Date("1970/1/1");
+	var days = ticks / 1000 / 60 / 60 / 24;
+	var newdate = new Date(dt.setDate(dt.getDate() + days));
+	return newdate;
+}
+
+function totalLeapDays(startDate, endDate) {
+
+	var leapDays = 0;
+	var startYear = startDate.getFullYear();
+	var endYear = endDate.getFullYear();
+
+	for (i = startYear + 1; i < endYear; i++) {
+		if (isLeapYear(i)) {
+			leapDays++;
+		}
+	}
+	if (isLeapYear(endYear) && startYear == endYear) {
+		leapDays++;
+	}
+	else {
+		if (isLeapYear(endYear) & endDate.getMonth() >= 2) {
+			leapDays++;
+		}
+		if (isLeapYear(startYear) & startDate.getMonth() < 2) {
+			leapDays++;
+		}
+	}
+
+	return leapDays;
+}
+
+function isLeapYear(date) {
+	if (date % 4 == 0 && (date % 100 != 0 || date % 400 == 0)) {
+		return true;
+	}
+	return false;
+}
+function tooltipFormatterforPieChart(name, value) {
+	var tooltioLabel = '<b>' + name + ' </b>:' + value + '<br/>';
+	return tooltioLabel;
+}
+function tooltipFormatter(x, y, val, name, seriesName, index) {
+	switch (val.xAxis.type) {
+		case 'datetime':
+			x = Highcharts.dateFormat(val.xAxis.dateFormat, x, index);
+			break;
+	}
+	var yaxisIndex = 0;
+	switch (index) {
+		case 3:
+			yaxisIndex = 0;
+			break;
+		case 1:
+			yaxisIndex = 1;
+	}
+	y = formatyaxisLabel(y, val.yAxis[yaxisIndex].formatter);
+	if (parseInt(y) != NaN) {
+		if (y % 1 != 0) {
+			y = Highcharts.numberFormat(y, 2, ".", '');
+		}
+	}
+	if (x == null) x = name;
+	return '<b>' + seriesName + ' ' + x + ' : ' + y + '</b>';
+}
+function formatyaxisLabel(y, format) {
+	y = applyBasicFormat(y, format)
+	if (format.sourceFormat == 'General') {
+		return y;
+	}
+	if (format.decimalPlaceExist) {
+		var actual = y;
+		if (format.thousandSeperator && Math.abs(y) > 999) {
+			y = Highcharts.numberFormat(y, format.decimalPlaces, ".", ',');
+			if (y.indexOf(',') == -1) {
+				y = actual;
+			}
+		}
+		else {
+			y = Highcharts.numberFormat(y, format.decimalPlaces);
+		}
+	}
+	else {
+		// no decimal places exist. but doing a format with 0.
+		var str = y.toString();
+		if (str.indexOf(".") != -1) {
+			y = Highcharts.numberFormat(y, format.decimalPlaces);
+		}
+	}
+	//made it Math.abs for QC 10834. Fixes it
+	if (format.thousandSeperator && Math.abs(y) > 999) {
+		y = Highcharts.numberFormat(y, 0, 0, ',');
+	}
+	if (!format.decimalPlaceExist && !format.thousandSeperator) {
+		if (format.decimalPlaceExist == undefined && format.thousandSeperator == undefined) {
+
+		}
+		else {
+			y = Highcharts.numberFormat(y, 0);
+		}
+	}
+	if (format.decimalPlaceExist == undefined && !format.thousandSeperator && format.sourceFormat != 'General') {
+		// Defaulting to decimal point and thousand separater
+		y = Highcharts.numberFormat(y, 0, '.', '');
+	}
+	if (format.parenthesesOnNegative) {
+		var str = y.toString();
+		if (str.indexOf('-') == 0) {
+			y = format.prefix + str.replace('-', '') + format.suffix;
+		}
+		if (!format.handleNegative) {
+			y = appendText(y, format);
+		}
+	}
+	if (!format.parenthesesOnNegative) {
+		y = appendText(y, format);
+	}
+
+	if (format.usePercentage && format.suffix != '%') {
+		y = y + '%';
+	}
+	try {
+		var str = y;
+		var cleanString = str.replace(/\s+/g, "")
+		return cleanString;
+	}
+	catch (err) {
+		return y;
+	}
+
+}
+function applyBasicFormat(y, format) {
+	if (format.displayUnit == 'millions') {
+		y = y / 1000000;
+	}
+	if (format.displayUnit == 'hundreds') {
+		y = y / 100;
+	}
+	if (format.displayUnit == 'thousands') {
+		y = y / 1000;
+	}
+	if (format.usePercentage) {
+		y = y * 100;
+	}
+	return y;
+}
+function appendText(text, format) {
+	if (format.appendSufix) {
+		text = text + format.suffix;
+	}
+	if (format.appendPrefix) {
+		if (!format.parenthesesOnNegative) {
+			text = text.toString();
+			if (text.indexOf('-') == 0) {
+				text = text.replace('-', '');
+				return '-' + format.prefix + text;
+			}
+		}
+		text = format.prefix + text;
+	}
+	return text;
+}
+function formatxAxisLabel(y, dataType, format) {
+	if (dataType == 'datetime') {
+		if (format == undefined) {
+			return Highcharts.dateFormat('%b-%y', y);
+		}
+		else {
+			return Highcharts.dateFormat(format, y);
+		}
+	}
+	else {
+		return y;
+	}
+}
+function setYaxisMinValue(val, primary, currentYAxis) {
+	if (!primary && !val.dualYaxis) {
+		return null;
+	}
+	if (currentYAxis.min == undefined && primary) {
+		return null;
+	}
+	if (currentYAxis.min == 0 || currentYAxis.min != undefined) {
+		return currentYAxis.min;
+	}
+	var length = val.series.length;
+	var yvalues = [];
+	for (var i = 0; i < length; i++) {
+		if (primary && (val.series[i].yAxis == undefined || val.series[i].yAxis == 0)) {
+			var ylength = val.series[i].data.length;
+			for (var j = 0; j < ylength; j++) {
+				yvalues.push(val.series[i].data[j].y);
+			}
+		}
+		else {
+			var ylength = val.series[i].data.length;
+			for (var j = 0; j < ylength; j++) {
+				yvalues.push(val.series[i].data[j].y);
+			}
+		}
+	}
+	var min = Math.min.apply(null, yvalues);
+	if (min < 0) {
+		return null;
+	}
+	return 0;
+}
+function primaryYhasNegative(chart) {
+	//Check if the yAxis is reversed in the chart
+	if (chart.yAxis[0].reversed || chart.yAxis[1].reversed) {
+		if (chart.yAxis[0].min <= 0)
+			return true;
+		else
+			return false;
+	}
+	//check if the primary yAxis has negative values
+	var length = chart.series.length;
+	for (var i = 0; i < length; i++) {
+		if (chart.series[i].yAxis && !(chart.series[i].yAxis.opposite)) {
+			if (chart.series[i].yAxis.min <= 0)
+				return true;
+		}
+	}
+	return false;
+}
+
+//incase all values positive in y
+function primaryYReversed(chart) {
+	if (chart.yAxis[0].reversed || chart.yAxis[1].reversed) {
+		if (chart.yAxis[0].min > 0)
+			return true;
+	}
+}
+
+function isAnyValueIn(target, values) {
+	for (var i = 0; i < values.length; i++) {
+		if (target.indexOf(values[i]) > -1) {
+			return true;
+		}
+	}
+	return false;
+}
+
+stackLabelformatter = function (axisObj, val) {
+	try {
+		pointIndex = axisObj.axis.series[0].xData.indexOf(axisObj.x);
+
+		if (pointIndex === -1 && val.series[0].dataLabels.Labels[axisObj.x] !== undefined) {
+			return val.series[0].dataLabels.Labels[axisObj.x].LabelText;
+		}
+		else if (val.series[0].dataLabels.Labels[pointIndex] !== undefined)
+			return val.series[0].dataLabels.Labels[pointIndex].LabelText;
+		else {
+			return;
+		}
+	}
+	catch (err) {
+		return;
+	}
+}
+
+function showToast(charts) {
+	try {
+		if (charts.instruction != "null" || typeof charts.instruction != "undefined") {
+			$('.toast').html(charts.instruction);
+			$('.toast').slideDown("slow").delay(8000).slideUp("slow");
+		}
+	}
+	catch (err) {
+	}
+}
+
+function setCentertoScreen() {
+	try {
+		var content = document.getElementById("popuptemplate");
+		var clientHeight = content.clientHeight;
+		if (clientHeight == 0) {
+			content.style.marginTop = globalTop;
+		}
+		else {
+			var top = (window.innerHeight - clientHeight) / 2;
+			content.style.marginTop = top + 'px';
+			globalTop = top + 'px';
+		}
+	}
+	catch (err) {
+		console.log("some exception in set center to screen");
+	}
+}

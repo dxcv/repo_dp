@@ -1,0 +1,85 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage[english, spanish]{babel}
+\usepackage[dvips]{graphics}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{fullpage}
+\usepackage{epsfig}
+\usepackage{multicol}
+\usepackage{wasysym}
+
+\usepackage[usenames,dvipsnames]{xcolor} 
+\usepackage{hyperref} 
+\definecolor{linkcolour}{rgb}{0,0.2,0.6} 
+\hypersetup{colorlinks,breaklinks,urlcolor=linkcolour,linkcolor=linkcolour} 
+\newcommand{\parallelsum}{\mathbin{\!/\mkern-5mu/\!}}
+
+
+
+\parindent 0pt
+\parskip 0pt
+
+\begin{document}
+
+\includegraphics[width=4.4cm, height=1.7cm]{logor.png}
+\vspace*{-1.55cm}
+
+\hspace*{1.4 cm}
+ \hspace*{2.9 cm}
+ {\footnotesize
+ \begin{tabular}{l}
+  \sc Credicorp Capital\\
+  \sc Administradora General de Fondos \\
+  \sc Mesa de Gestión de Inversiones  \\
+  \sc Fernando Suárez  \\
+  \vspace{15\baselineskip}\mbox{}
+  \vspace{-3mm}\mbox{}
+ \end{tabular}
+}
+
+ \bigskip
+
+\vspace*{5mm}
+\begin{center}
+{\today} \\
+\vspace{3mm}
+{\Large\bf Carga de Valores Cuota} \\
+\vspace{2mm}
+\end{center}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%MANENER FIJO ARRIBA%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Carga de Valores Cuota}
+
+
+En el presente documento se detalla el funcionamiento del script para actualizar los valores cuota de fondos mutuos, fondos de inversión y carteras administradas.
+
+
+\subsection{Esquema de almacenamiento}
+
+
+\par Dado que por lo general el valor cuota se consulta de manera histórica, la cantidad de información que se descarga siempre es alta. Dado esto, resulta muy costoso bajar los valores cuota de SIGA a través de vistas anidadas. En este contexto, lo más conveniente es tener una tabla con la serie de los valores cuota al día en Puyehue. La tabla en cuestión se llama \textsc{ZHIS\_Series\_Main} y se actualiza de manera diaria a través de un script que descarga los valores cuota desde el servidor Lagunillas. El detalle de los esquema para la tabla descrita se encuentra en el Cuadro \ref{bmk-sch}.
+
+\begin{table}[h]
+{\small
+\fbox{\parbox{\textwidth}{
+
+\textsc{ZHIS\_Series\_Main} (\underline{Fecha: date, Codigo\_Fdo: string, Codigo\_Ser: string}, Valor\_Cuota: double, Patrimonio: double)
+
+}
+}}
+\caption{Esquema de tabla de almacenamiento de valores cuota}
+\label{bmk-sch}
+\end{table}
+
+
+
+\subsection{Script de actualización}
+
+Todos los días corre un script en el servidor Worpress que descarga los valores cuota del servidor Lagunillas y los inserta en la tabla \\textsc{ZHIS\_Series\_Main}, para esto se pisan los últimos 30 días. La ubicación relativa del script que se corre en el repositorio es la siguiente:
+\begin{center}
+\texttt{mesagi/Proyectos/carga\_series/series\_uploader.py}
+\end{center}
+
+\end{document}
+
+

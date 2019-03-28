@@ -1,0 +1,1 @@
+DELETE FROM dbo.Benchmarks_Dinamica WHERE Fecha>='AUTODATE'

@@ -1,0 +1,1 @@
+select codigo_ins_bbl, codigo_ins from mapping_bbl_bcs

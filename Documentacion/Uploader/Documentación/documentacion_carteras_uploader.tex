@@ -1,0 +1,107 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage[english, spanish]{babel}
+\usepackage[dvips]{graphics}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{fullpage}
+\usepackage{epsfig}
+\usepackage{multicol}
+\usepackage{wasysym}
+
+\usepackage[usenames,dvipsnames]{xcolor} 
+\usepackage{hyperref} 
+\definecolor{linkcolour}{rgb}{0,0.2,0.6} 
+\hypersetup{colorlinks,breaklinks,urlcolor=linkcolour,linkcolor=linkcolour} 
+\newcommand{\parallelsum}{\mathbin{\!/\mkern-5mu/\!}}
+
+
+
+\parindent 0pt
+\parskip 0pt
+
+\begin{document}
+
+\includegraphics[width=4.4cm, height=1.7cm]{logor.png}
+\vspace*{-1.55cm}
+
+\hspace*{1.4 cm}
+ \hspace*{2.9 cm}
+ {\footnotesize
+ \begin{tabular}{l}
+  \sc Credicorp Capital\\
+  \sc Administradora General de Fondos \\
+  \sc Mesa de Gestión de Inversiones  \\
+  \sc Fernando Suárez  \\
+  \vspace{15\baselineskip}\mbox{}
+  \vspace{-3mm}\mbox{}
+ \end{tabular}
+}
+
+ \bigskip
+
+\vspace*{5mm}
+\begin{center}
+{\today} \\
+\vspace{3mm}
+{\Large\bf Interfaz de carga de instrumentos} \\
+\vspace{2mm}
+\end{center}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%MANTENER FIJO ARRIBA%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Carga de Instrumentos}
+
+
+En el presente documento se detalla el funcionamiento de la interfaz de carga de instrumentos para los fondos de la AGF.
+
+
+\subsection{Esquema de almacenamiento}
+
+
+\par Día a día, las distintas carteras de los fondos son actualizadas en SIGA de manera automática, agregándose tantos emisores como instrumentos nuevos al sistema. Sin embargo, muchas veces la información ingresada es errónea o simplemente carece del detalle necesario para generar reporting útil para inversiones. Por ejemplo, muchas veces la clasificación de riesgo de los emisores es incorrecta o se da que el sistema no soporta derivados. 
+
+
+Dado este contexto, se diseño una interfaz para que los distintos \emph{portfolio managers} carguen los nuevos instrumentos de manera diaria a nuestras bases de datos. En resumen, la interfaz permite realizar cuatro operaciones:
+\begin{itemize}
+	\item cargar un nuevo emisor.
+	\item cargar un nuevo instrumento.
+	\item cargar un nuevo forward de moneda.
+	\item actualizar/cargar una nueva estrategia.
+  \item cargar un nuevo indice.
+\end{itemize}
+
+Para realizar esto se definieron una serie de tablas cuyos esquemas se encuentran en el Cuadro \ref{bmk-sch}.
+
+\begin{table}[h]
+{\small
+\fbox{\parbox{\textwidth}{
+\begin{itemize}
+\item \textsc{Emisores} (\underline{Codigo\_Emi: string}, Nombre\_Emisor: string, Sector: string, Pais\_Emisor: string)\bigskip
+\item \textsc{Instrumentos} (\underline{Codigo\_Emi: string, Codigo\_Ins: string}, Nombre\_Instrumento: string, Tipo\_Instrumento: string, Riesgo: string)
+\item \textsc{FWD\_Monedas\_Estatica} (\underline{Codigo\_Fdo: string, Codigo\_Emi: string, Codigo\_Ins: string}, $\ldots$)\bigskip
+\item \textsc{Estrategias} (\underline{Codigo\_Fdo: string, Codigo\_Emi: string, Codigo\_Ins: string},  Estrategia: string)
+\item \textsc{Indices\_Estatica} (\underline{Index\_Id: int, Moneda: string, Ticker: string},  Nombre\_Index: string)
+\item \textsc{Indices\_Dinamica} (\underline{Index\_Id: int, Fecha: smalldate},  Valor: float)
+\end{itemize}
+}
+}}
+\caption{Esquema de tabla de almacenamiento de valores cuota}
+\label{bmk-sch}
+\end{table}
+
+
+\subsection{Funcionamiento}
+
+El código de la interfaz se puede encontrar en :
+\begin{center}
+\texttt{mesagi/Proyectos/carteras\_uploader/}
+\end{center}
+El desarrollo está basado en C\# con la vista diseñada en WPF. La idea es que los principales usuarios sean los portfolio managers de los fondos. Para detectar cuando falte por agregar un nuevo intrumento basta con ver la tabla \textsc{ZHIS\_Carteras\_Main}.
+
+\subsection{Posibles puntos de falla}
+
+Dado que sólo es una interfaz de carga de datos lo más probable es que no falle por algún error del algoritmo. En este contexto, el principal motivo de falla puede ser que el instrumento o emisor que se desea agregar ya exista, en este caso la interfaz arroajara un error de SQL. Otra posible razón de falla es que exista algún campo que no se ingresó, aca es importante notar que \textbf{todos los campos son obligatorios}, en caso de que un campo no aplique se puede ingresar la opción N/A.
+
+
+\end{document}
+
+

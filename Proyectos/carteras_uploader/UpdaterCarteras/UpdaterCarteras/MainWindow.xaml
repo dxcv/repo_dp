@@ -1,0 +1,19 @@
+﻿<Window x:Class="UpdaterCarteras.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:UpdaterCarteras"
+        mc:Ignorable="d"
+        Title="Uploader Carteras" Height="350" Width="525" Background="#FF2B2B2B" ResizeMode="NoResize" WindowStartupLocation="CenterScreen">
+    <Canvas HorizontalAlignment="Left" Height="307" Margin="12,6,0,0" VerticalAlignment="Top" Width="494">
+        <Button x:Name="Boton_Emisores" Content="Subir emisor" Canvas.Left="50" Canvas.Top="78" Width="135" Click="Boton_Emisores_Click" Height="25">
+        </Button>
+        <Button x:Name="Boton_Instrumentos" Content="Subir instrumento" Canvas.Left="50" Canvas.Top="136" Width="135" Height="25" Click="Boton_Instrumentos_Click"/>
+        <Label x:Name="Label_Bienvenida" Content="Seleccionar operación" Canvas.Left="185" Canvas.Top="20" Foreground="#FFD4D4D4" Height="30" Width="126"/>
+        <Button x:Name="Boton_FX_Forward" Content="Subir FX forward" Canvas.Left="305" Canvas.Top="78" Width="135" Height="25" Click="Boton_FXForward_Click"/>
+        <Button x:Name="Boton_Estrategias" Content="Asociar nueva estrategia a instrumento" Canvas.Left="305" Canvas.Top="136" Width="135" Height="25" Click="Boton_Estrategias_Click"/>
+        <Button x:Name="Boton_Indices" Content="Subir indice" Canvas.Left="50" Canvas.Top="190" Width="135" Height="25" Click="Boton_Indices_Click"/>
+    </Canvas>
+
+</Window>

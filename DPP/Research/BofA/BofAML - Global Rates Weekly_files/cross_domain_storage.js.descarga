@@ -1,0 +1,309 @@
+/**
+ * Cross domain storage.
+ * Based on: http://www.nczonline.net/blog/2010/09/07/learning-from-xauth-cross-domain-localstorage/
+ * @author Juan Ramón González Hidalgo
+ *
+ * @param opts JSON object with the attribute names:
+ *      - origin Iframe URL
+ *      - path Path to iframe html file in origin
+ */
+function cross_domain_storage(opts){
+
+	var origin = opts.origin || '',
+	path = opts.path || '',
+	cdstorage = {},
+	_iframe = null,
+	_iframeReady = false,
+	_origin = origin,
+	_path = path,
+	_queue = [],
+	_requests = {},
+	_id = 0;
+
+	var supported = (function(){
+		try{
+			return window.postMessage && window.JSON && 'localStorage' in window && window['localStorage'] !== null;
+		}catch(e){
+			return false;
+		}
+	})();
+
+	//private methods
+
+	var _sendRequest = function(data){
+		
+		if (_iframe) {
+			_requests[data.request.id] = data;
+			
+			// otherWindow.postMessage(message, targetOrigin, [transfer]);
+			// reciever.postMessage(message to post, receiver where message is posted);
+			_iframe.contentWindow.postMessage(JSON.stringify(data.request), _origin);			
+		}
+	};
+
+	var _iframeLoaded = function(){
+		_iframeReady = true;
+		if (_queue.length) {
+			for (var i=0, len=_queue.length; i < len; i++){
+				_sendRequest(_queue[i]);
+			}
+			_queue = [];
+		}
+	};
+
+	var _handleMessage = function(event){
+		//alert("data.event.origin --> "+event.origin);
+		if (event.origin === _origin) {
+			var data = JSON.parse(event.data);	
+			var userAgent = navigator.userAgent;	
+			var offlineCookieValue = readCookie('offlineCookie');
+			var ieFlag = false; 
+			if (userAgent.indexOf("MSIE") != -1 || !!userAgent.match(/Trident.*rv[ :]*11\./)) { 
+				ieFlag= true; 			
+			}			
+		//	alert("data.key --> "+data.key + "  \n data.value --> "+data.value + "   \n offlineCookieValue --> "+offlineCookieValue + " \n ieFlag "+ieFlag);
+			// QC# 32607 start, Added ieLSFlag to fixing the IE localStorage issue after deleting the cookies and caches and database values from browser
+			if(data.key == 'ieLSFlag' && data.value == 'true'){
+				var offlinePageCookie = document.getElementById("encryptedCookie").value;			
+				offLineIELSVal = 'true';
+				offLineDataEvent = "ieLSFlag";
+				if(ieFlag){
+					setCookie('offlineCookie',offlinePageCookie,3650);				
+				}
+			} 			
+		
+			if(!ieFlag && data.key == 'ieLSFlag' && data.value == 'false'){ 
+				offLineIELSVal = 'true';
+				offLineDataEvent = "ieLSFlag";	
+			} 
+			
+			if(!ieFlag && data.key == 'ieLSFlag' && (data.value == '' || data.value == 'null' || data.value == null)){ 
+				offLineIELSVal = 'false';
+				offLineDataEvent = "ieLSFlag";	
+			} 
+			
+			if(ieFlag && data.key == 'offline_Flag' && (data.value == '' || data.value == 'null' || data.value == null)){ 
+				offLineIELSVal = 'false';
+				offLineDataEvent = "ieLSFlag";	
+			} 
+			
+			if(offlineCookieValue != null && offlineCookieValue != '' && offlineCookieValue != 'null' && offlineCookieValue.length > 5){
+				offLineIELSVal = 'true';			
+			} 		
+			// QC# 32607 End			
+			 
+			if(data.value == 'offline_Valid'){				
+				offLineDataEvent = 'offline_Valid';			
+				if(localStorage != null && localStorage != 'undefined'){
+					if(localStorage.getItem('offline_Reports') != null){
+						var loc = localStorage.getItem('offline_Reports');
+						loc = loc.replace('~null', '');
+						if(loc.indexOf(decodeURIComponent(window.location)) == -1){
+							localStorage.setItem('offline_Reports', decodeURIComponent(window.location)+'~'+loc);
+						}
+			        }
+					else{
+						localStorage.setItem('offline_Reports',decodeURIComponent(window.location));
+					}
+					localStorage.setItem('offline_Flag',data.value);
+				}
+				else{
+					if(readCookie('offline_Reports') != null){
+						var loc = readCookie('offline_Reports');
+						loc = decodeURIComponent(loc);
+						loc = loc.replace('~null', '');
+						if(loc.indexOf(decodeURIComponent(window.location)) == -1){
+							if(ieFlag){
+								setCookie("offline_Reports", decodeURIComponent(window.location)+'~'+loc);
+							}
+						}
+					}
+					else{
+						if(ieFlag){
+							setCookie('offline_Reports',decodeURIComponent(window.location),3650);
+						}
+					}
+				}
+				
+				if(ieFlag){
+					setCookie('offline_Flag',data.value,3650);
+				}
+				
+			} else if (offLineDataEvent == 'offline_Valid'  && data.key == 'offlineCookie' && data.value != null && data.value != '' ){
+			
+				if( (null == offlineCookieValue || '' == offlineCookieValue || 'null' == offlineCookieValue) && ieFlag ){					
+					var redirectUrl = protocolOnAddressBar + "/WebReports/offlineUnauthorized.html";
+						if (null != jQuery("#jpyOfflineReport") && 'undefined' != jQuery("#jpyOfflineReport") && jQuery("#jpyOfflineReport").length) {
+							redirectUrl = protocolOnAddressBar + "/WebReports/jpyOfflineUnauthorized.html";
+						}					
+						window.location.href = redirectUrl;	
+				} else {
+					offLineDataEvent = 'offlineCookie';				
+				   if(localStorage != null && localStorage != 'undefined'){
+						localStorage.setItem('offlineCookie',data.value);
+					}
+					if(ieFlag){
+						setCookie('offlineCookie',data.value,3650);
+					}
+					$("#top").show();
+			    }
+			} else if (offLineDataEvent == 'offline_Valid'){ 	
+				
+				offLineDataEvent = 'offlineCookie';					
+				/* Removed below if condition for contact override users due to localStorage issue. This is happening due to windows latest patches. we are redirecting the user to error message page for all without cookie scenarios */ 
+				//if (null != jQuery("#contactOverrideFlag") && 'undefined' != jQuery("#contactOverrideFlag")	&& jQuery("#contactOverrideFlag").length) {					
+						var redirectUrl = protocolOnAddressBar + "/WebReports/offlineUnauthorized.html";
+						if (null != jQuery("#jpyOfflineReport") && 'undefined' != jQuery("#jpyOfflineReport") && jQuery("#jpyOfflineReport").length) {
+							redirectUrl = protocolOnAddressBar + "/WebReports/jpyOfflineUnauthorized.html";
+						}						
+						window.location.href = redirectUrl;					
+				//}
+			} else if (data.key != 'ieLSFlag' && offLineDataEvent != 'offlineCookie' && offLineIELSVal == 'false'){ 								
+				if(localStorage != null && localStorage != 'undefined'){
+					localStorage.setItem('ieLSFlag',null);
+					localStorage.setItem('offline_Flag',null);
+					localStorage.setItem('offlineCookie',null);
+					localStorage.setItem('offline_Reports',null);
+					
+				}
+				if(ieFlag){
+					setCookie('ieLSFlag',null,0);
+					setCookie('offline_Flag',null,0);
+					setCookie('offlineCookie',null,0);
+					setCookie('offline_Reports',null,0);
+					
+				}				
+				
+
+				var loc = location.pathname;
+				if (loc.indexOf("Temporary%20Internet%20Files") != -1 || loc.indexOf("Temporary Internet Files") != -1) {
+				    var redirectUrl = protocolOnAddressBar + "/WebReports/offlineUnauthorizedEA.html";
+				    if (null != jQuery("#jpyOfflineReport") && 'undefined' != jQuery("#jpyOfflineReport") && jQuery("#jpyOfflineReport").length) {
+				        redirectUrl = protocolOnAddressBar + "/WebReports/jpyOfflineUnauthorizedEA.html";
+				    }
+				    window.location.href = redirectUrl;
+				} else {
+				    var redirectUrl = protocolOnAddressBar + "/WebReports/offlineUnauthorized.html";
+				    if (null != jQuery("#jpyOfflineReport") && 'undefined' != jQuery("#jpyOfflineReport") && jQuery("#jpyOfflineReport").length) {
+				        redirectUrl = protocolOnAddressBar + "/WebReports/jpyOfflineUnauthorized.html";
+				    }					
+				    window.location.href = redirectUrl;
+				} 
+				
+			}
+		}
+	}
+
+	//Public methods
+
+	cdstorage.getItem = function(key, callback){
+		if (supported) {
+			var request = {
+					id: ++_id,
+					type: 'get',
+					key: key
+			},
+			data = {
+					request: request,
+					callback: callback
+			};
+			if (window.jQuery) {
+				data.deferred = jQuery.Deferred();
+			}
+
+			if (_iframeReady) {
+				_sendRequest(data);
+			} else {
+				_queue.push(data);
+			}
+
+			if (window.jQuery) {
+				return data.deferred.promise();
+			}
+		}
+	};
+
+	cdstorage.setItem = function(key, value){
+		if (supported) {
+			var request = {
+					id: ++_id,
+					type: 'set',
+					key: key,
+					value: value
+			},
+			data = {
+					request: request
+			};
+			if (window.jQuery) {
+				data.deferred = jQuery.Deferred();
+			}
+
+			if (_iframeReady) {
+				_sendRequest(data);
+			} else {
+				_queue.push(data);
+			}
+
+			if (window.jQuery) {
+				return data.deferred.promise();
+			}
+		}
+	};
+
+	//Init
+	if (!_iframe && supported) {
+		_iframe = document.createElement("iframe");
+		_iframe.style.cssText = "position:absolute;width:1px;height:1px;left:-9999px;";
+		document.body.appendChild(_iframe);
+		
+		if (window.addEventListener) {
+			_iframe.addEventListener("load", function(){ 
+				_iframeLoaded(); 
+			}, false);
+			
+			// Window Message Fire Event
+			window.addEventListener("message", function(event){				
+				_handleMessage(event);
+			}, false);
+			
+		} else if (_iframe.attachEvent) {
+			_iframe.attachEvent("onload", function(){ 
+				_iframeLoaded(); 
+			}, false);
+			
+			// Window Message Fire Event
+			window.attachEvent("onmessage", function(event){ 
+				_handleMessage(event);
+			});
+		}
+		_iframe.src = _origin + _path;
+	}
+
+	return cdstorage;
+}
+
+var protocolOnAddressBar = '';
+var offLineDataEvent = '';
+var offLineIELSVal = '';
+jQuery(document).ready(function(){
+if (jQuery("#offlineURLDownloadedFrom").length) {
+	var a = document.createElement('a');
+	a.href = jQuery("#offlineURLDownloadedFrom").html();
+	protocolOnAddressBar = a.protocol + '//' + a.hostname;		
+	var userAgent = navigator.userAgent;
+	if (userAgent.indexOf("MSIE") != -1 || !!userAgent.match(/Trident.*rv[ :]*11\./)) {
+        // Localstorage value is available only from http domain on IE browser
+	    protocolOnAddressBar = protocolOnAddressBar.replace("https:", "http:");
+	}
+
+	cdstorage = cross_domain_storage({ 
+		origin: protocolOnAddressBar, 
+		path: "/RLWebReports-portlet/js/crossd_iframe.html" 
+	});
+	
+	cdstorage.getItem('ieLSFlag');
+	cdstorage.getItem('offline_Flag');
+	cdstorage.getItem('offlineCookie');
+	
+	}
+});

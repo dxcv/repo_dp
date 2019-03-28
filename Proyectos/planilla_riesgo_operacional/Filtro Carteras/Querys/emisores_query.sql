@@ -1,0 +1,3 @@
+SELECT DISTINCT Codigo_Emi
+FROM dbo.ZHIS_CARTERAS
+WHERE Fecha ='AUTODATE' AND Codigo_Emi<>''

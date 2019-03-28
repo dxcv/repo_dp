@@ -1,0 +1,126 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage[english, spanish]{babel}
+\usepackage[dvips]{graphics}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{fullpage}
+\usepackage{epsfig}
+\usepackage{multicol}
+\usepackage{wasysym}
+
+\usepackage[usenames,dvipsnames]{xcolor} 
+\usepackage{hyperref} 
+\definecolor{linkcolour}{rgb}{0,0.2,0.6} 
+\hypersetup{colorlinks,breaklinks,urlcolor=linkcolour,linkcolor=linkcolour} 
+\newcommand{\parallelsum}{\mathbin{\!/\mkern-5mu/\!}}
+
+
+
+\parindent 0pt
+\parskip 0pt
+
+\begin{document}
+
+\includegraphics[width=4.4cm, height=1.7cm]{logor.png}
+\vspace*{-1.55cm}
+
+\hspace*{1.4 cm}
+ \hspace*{2.9 cm}
+ {\footnotesize
+ \begin{tabular}{l}
+  \sc Credicorp Capital\\
+  \sc Administradora General de Fondos \\
+  \sc Mesa de Gestión de Inversiones  \\
+  \sc Fernando Suárez  \\
+  \vspace{15\baselineskip}\mbox{}
+  \vspace{-3mm}\mbox{}
+ \end{tabular}
+}
+
+ \bigskip
+
+\vspace*{5mm}
+\begin{center}
+{\today} \\
+\vspace{3mm}
+{\Large\bf Reportería de Rentabilidad} \\
+\vspace{2mm}
+\end{center}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%MANENER FIJO ARRIBA%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Reportería de Rentabilidad}
+
+
+En el presente documento se detalla el funcionamiento y uso de la reportería de rentabilidad de fondos.
+
+
+\subsection{Fuente de datos}
+
+Este sistema de reportería se basa en 3 fuentes de datos:
+\begin{itemize}
+\item \textsc{ZHIS\_Series\_Ajustado}
+\item \textsc{Benchmarks\_Dinamica}
+\item \textsc{Benchmarks\_Estatica}
+\item \textsc{Benchmarks\_Fondos}
+\item \textsc{ZHIS\_Series\_Lux}
+\item \textsc{ZHIS\_Series\_Ajustado}
+\item \textsc{Master\_Fondos}
+\item \textsc{FondosIR}
+\item \textsc{TAC}
+\end{itemize}
+
+
+\subsection{Funcionamiento}
+
+El psistema de reportería como tal, consiste en un script \texttt{ReturnReportGenerator.py} que corre a las 11:45am en el Servidor Wordpress. La ubicación relativa del script que se corre en el repositorio es la siguiente:
+\begin{center}
+\texttt{mesagi/Proyectos/reportería\_rentabilidad/ReturnReportGenerator.py}
+\end{center}
+
+A grandes rasgos, el sistema realiza las siguientes acciones:
+
+
+\begin{enumerate}
+\item Abre el archivo \textsc{ReturnReportGenerator.xlsx}, el cual contiene la plantilla a la que se renderean los datos para el formatting del informe.
+\item Se consulta a la tabla \textsc{FondosIR} para obtener la lista de fondos activos.
+\item Por cada fondo se obtiene su valor cuota ajustado con TAC de la tabla \textsc{ZHIS\_Series\_Ajustado}. Además se obtiene la serie del benchmark de la tabla \textsc{Benchmarks\_Dinamica}.
+\item Para cada intervalo de tiempo se calcula la rentabilidad de ambos vectores y adicionalemente se recosntruye el valor cuota sin TAC sumando el TAC acumulado del fondo, el cual se obtiene de la tabla \textsc{TAC}. Todos estos valores se almacenan finalmente en una lista la cual es insertada en la hoja \textsc{Inputs} de la plantilla, en la fila asignada para el fondo.
+\item Luego se repiten los 3 pasos anteriores pero para los fondos de Luxemburgo. La única diferencia, es que ahora conseguimos la lista de fondos desde la tabla \textsc{ZHIS\_Series\_Lux} y la serie desde \textsc{ZHIS\_Series\_Lux}.
+\item Finalmente se repiten los 3 pasos anteriores pero para las carteras administradas. La única diferencia, es que ahora conseguimos la lista de carteras desde la tabla \textsc{Master\_Fondos}. La razón de esto, es porque esa tabla es una vista que proyecta la lista de fondos activos según SIGA. Dado que las carteras se mueven más, es necesario obtener la información de una tabla que se actualice automáticamente.
+\item Ya con los datos necesarios en al hoja inputs, las otras hojas pueden referenciar la información que necesitan proyectar para el informe. Además, mantenemos en memoria una lista con los distintos tipos de carteras, ya que la vista si bien es estática, esta debe variar para obtneer un pdf por tipo de cartera. La referencia al tipo va en al hoja inputs.
+\item Finalmente se imprimen los pdf y se envían el correo con 3 pdf: Un informe para la agf, otro para el area comercial (sin benchmarks) y otro de carteras (para Portfolio Solutions).
+\end{enumerate}
+
+%La ubicación relativa del script que se corre en el repositorio es la siguiente:
+%\begin{center}
+%\texttt{mesagi/Proyectos/reporteria\_posicionamiento/NewPos.py}
+%\end{center}
+
+
+\subsection{Cómo agregar/borrar un fondo}
+Para agregar un fondo al reporte tenemos 3 casos:
+\begin{itemize}
+\item \textbf{Fondo:} En el caso de que sea un fondo común y corriente, este debe agregarse a la tabla \textsc{FondosIR}. Adenás, se debe corroborar que etnga un benchmark creado asignado a él\footnote{Ver documentación de benchmarks}. Luego, el programa debería reconocerlo y lo único que se debe hacer es reacomodar las celdas de la plantilla de rendereo para que se agregue al PDF.
+\item \textbf{Fondo de Luxemburgo:} El procedimiento es prácticamente igual, excepto en que ahora el fondo debe agregarse a la tabla \textsc{FondosLux}.
+\item \textbf{Cartera administrada:} El informe debiese agregarlas de manera automática. Sin embargo, al igual que en los casos anteriores, la cartera debe estar ligada a un benchmark definido.
+\end{itemize}
+
+
+Para borrar un fondo del informe basta con poner en valro \texttt{active = 0} en \textsc{FondosIr} o \textsc{FondosLux} el codigo del fondo a eliminar y quitar su asignación a benchmark. Para el caso de las carteras basta con quitar la asignación de la cartera a un benchmark.
+
+
+\subsection{Posibles puntos de falla}
+
+En caso de que en algún día el reporte no corra o no se llegue el correo, se recomienda tomar en cuenta los siguientes puntos:
+\begin{itemize}
+\item Si no hay datos de los benchmarks el informe no funcionará \footnote{Ver puntos de falla en documentación de Benchmarks.}.
+\item Si uno hay valor cuota a la fecha el output no será el correcto (Chequear si la tabla \textsc{ZHIS\_Series} tiene información acutalizada).
+\item Si hay un excel abierto en el servidor aparte de \textsc{ReturnReportGenerator.xlsx} el programa lo tomará como base para el informe y se caerá.
+\item Verificar que los factores de ajuste y reparto acumulado estén a la fecha en la tabla \textsc{Factores}.
+\item Verificar que los valores cuota de los fondos de Luxemburgo estén a la fecha en la tabla \textsc{ZHIS\_Series\_Lux}.
+\end{itemize}
+
+
+\end{document}
+
+

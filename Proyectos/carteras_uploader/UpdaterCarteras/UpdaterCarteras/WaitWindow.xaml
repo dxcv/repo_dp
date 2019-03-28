@@ -1,0 +1,18 @@
+﻿<Window x:Class="UpdaterCarteras.WaitWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:UpdaterCarteras"
+        mc:Ignorable="d"
+        Title="Uploading..." Height="85.237" Width="300" Background="#FF2B2B2B" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" >
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="26*"/>
+            <ColumnDefinition Width="4*"/>
+            <ColumnDefinition Width="117*"/>
+        </Grid.ColumnDefinitions>
+        <TextBlock x:Name="textBlock" HorizontalAlignment="Left" Margin="4,23,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Foreground="#FFD4D4D4" Grid.Column="1" Grid.ColumnSpan="2"><Run Text="Cargando indice a"/><Run Text=" l"/><Run Text="a base de dato"/><Run Text="s"/><Run Text="..."/></TextBlock>
+
+    </Grid>
+</Window>

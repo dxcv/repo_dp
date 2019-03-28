@@ -1,0 +1,1 @@
+DELETE FROM dbo.Indices WHERE Fecha>='AUTODATE'

@@ -1,0 +1,20 @@
+SELECT Ltrim(Rtrim(fecha)) AS fecha,
+       Ltrim(Rtrim(codigo_fdo)) AS codigo_fdo,
+       Ltrim(Rtrim(codigo_emi)) AS codigo_emi,
+       Ltrim(Rtrim(codigo_ins)) AS codigo_ins,
+       Cast(weight AS FLOAT) AS weight,
+       Ltrim(Rtrim(tipo_instrumento)) AS tipo_instrumento,
+       Ltrim(Rtrim(moneda)) AS moneda,
+       Ltrim(Rtrim(sector)) AS sector,
+       Cast(monto AS FLOAT) AS monto,
+       cantidad AS cantidad,
+       Cast(precio AS FLOAT) AS precio,
+       Cast(duration AS FLOAT) AS duration,
+       Cast(tasa AS FLOAT) AS tasa,
+       Ltrim(Rtrim(riesgo)) AS riesgo,
+       Ltrim(Rtrim(nombre_emisor)) AS nombre_emisor,
+       Ltrim(Rtrim(nombre_instrumento)) AS nombre_instrumento,
+       Ltrim(Rtrim(fec_vcto)) AS fec_vtco,
+       Cast(weight * duration AS FLOAT) AS ctd
+FROM dbo.zhis_carteras_main
+WHERE fecha = 'AUTODATE'

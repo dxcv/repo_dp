@@ -1,0 +1,1 @@
+select top 1 fecha from ZHIS_AFPE_moneda_final order by fecha desc

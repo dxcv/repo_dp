@@ -1,0 +1,20 @@
+SELECT        fecha, codigo_fdo, codigo_emi, codigo_ins, SUM(weight) AS weight, tipo_instrumento, moneda, sector, SUM(monto) AS monto, SUM(nominal) AS nominal, SUM(cantidad) AS cantidad, AVG(precio) AS precio, AVG(precio_dirty) 
+                         AS precio_dirty, AVG(duration) AS duration, AVG(tasa) AS tasa, riesgo, nombre_emisor, nombre_instrumento, fec_vcto, SUM(ctd) AS ctd, pais_emisor, riesgo_internacional, zona, renta, AVG(tasa_compra) AS tasa_compra, 
+                         tipo_ra
+FROM            (SELECT        A.fecha, A.codigo_fdo, CASE WHEN B.codigo_emi IS NULL THEN A.codigo_emi ELSE B.codigo_emi END AS codigo_emi, CASE WHEN B.codigo_ins IS NULL 
+                                                    THEN A.codigo_ins ELSE B.codigo_ins END AS codigo_ins, CASE WHEN B.weight IS NULL THEN A.weight ELSE B.weight * A.weight END AS weight, CASE WHEN B.tipo_instrumento IS NULL 
+                                                    THEN A.tipo_instrumento ELSE B.tipo_instrumento END AS tipo_instrumento, CASE WHEN B.moneda IS NULL THEN A.moneda ELSE CASE WHEN B.moneda <> B.moneda_fdo COLLATE database_default AND 
+                                                    (B.moneda <> 'UF' AND B.moneda <> 'ARS') THEN A.moneda ELSE B.moneda END END AS moneda, CASE WHEN B.sector IS NULL THEN A.sector ELSE B.sector END AS sector, CASE WHEN B.monto IS NULL 
+                                                    THEN A.monto ELSE A.monto * B.weight END AS monto, CASE WHEN B.nominal IS NULL THEN A.nominal ELSE (100 * A.monto * B.weight) / B.precio_dirty END AS nominal, CASE WHEN B.cantidad IS NULL 
+                                                    THEN A.cantidad ELSE (100 * A.monto * B.weight) / B.precio_dirty END AS cantidad, CASE WHEN B.precio IS NULL THEN A.precio ELSE B.precio END AS precio, CASE WHEN B.precio_dirty IS NULL 
+                                                    THEN A.precio_dirty ELSE B.precio_dirty END AS precio_dirty, CASE WHEN B.duration IS NULL THEN A.duration ELSE B.duration END AS duration, CASE WHEN B.tasa IS NULL 
+                                                    THEN A.tasa ELSE B.tasa END AS tasa, CASE WHEN B.riesgo IS NULL THEN A.riesgo ELSE B.riesgo END AS riesgo, CASE WHEN B.nombre_emisor IS NULL 
+                                                    THEN A.nombre_emisor ELSE B.nombre_emisor END AS nombre_emisor, CASE WHEN B.nombre_instrumento IS NULL THEN A.nombre_instrumento ELSE B.nombre_instrumento END AS nombre_instrumento, 
+                                                    CASE WHEN B.fec_vcto IS NULL THEN A.fec_vcto ELSE B.fec_vcto END AS fec_vcto, CASE WHEN B.duration IS NULL THEN A.duration * A.weight ELSE B.duration * B.weight * A.weight END AS ctd, 
+                                                    CASE WHEN B.pais_emisor IS NULL THEN A.pais_emisor ELSE B.pais_emisor END AS pais_emisor, CASE WHEN B.riesgo_internacional IS NULL 
+                                                    THEN A.riesgo_internacional ELSE B.riesgo_internacional END AS riesgo_internacional, CASE WHEN B.zona IS NULL THEN A.zona ELSE B.zona END AS zona, CASE WHEN B.renta IS NULL 
+                                                    THEN A.renta ELSE B.renta END AS renta, CASE WHEN B.tasa_compra IS NULL THEN A.tasa_compra ELSE B.tasa_compra END AS tasa_compra, CASE WHEN B.tipo_ra IS NULL 
+                                                    THEN A.tipo_ra ELSE B.tipo_ra END AS tipo_ra
+                          FROM            dbo.ZHIS_Carteras_Main AS A LEFT OUTER JOIN
+                                                    dbo.ZHIS_Carteras_Main AS B ON A.fecha = B.fecha AND A.codigo_emi = B.codigo_fdo) AS r
+GROUP BY fecha, codigo_fdo, codigo_emi, codigo_ins, tipo_instrumento, moneda, sector, riesgo, nombre_emisor, nombre_instrumento, fec_vcto, pais_emisor, riesgo_internacional, zona, renta, tipo_ra

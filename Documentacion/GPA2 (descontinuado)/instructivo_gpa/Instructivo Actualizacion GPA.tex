@@ -1,0 +1,124 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage[english, spanish]{babel}
+\usepackage[dvips]{graphics}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{fullpage}
+\usepackage{epsfig}
+\usepackage{multicol}
+\usepackage{wasysym}
+
+\usepackage[usenames,dvipsnames]{xcolor} 
+\usepackage{hyperref} 
+\definecolor{linkcolour}{rgb}{0,0.2,0.6} 
+\hypersetup{colorlinks,breaklinks,urlcolor=linkcolour,linkcolor=linkcolour} 
+\newcommand{\parallelsum}{\mathbin{\!/\mkern-5mu/\!}}
+
+
+
+\parindent 0pt
+\parskip 0pt
+
+\begin{document}
+
+\includegraphics[width=4.6cm]{logor.png}
+\vspace*{-1.9cm}
+
+\hspace*{1.4 cm}
+ \hspace*{2.9 cm}
+ \begin{tabular}{l}
+  \sc IM Trust - Credicorp Capital\\
+  \sc Administradora General de Fondos \\
+  \sc Mesa de Gestión de Inversiones  \\
+  \sc Fernando Suárez  \\
+  \vspace{15\baselineskip}\mbox{}
+  \vspace{-3mm}\mbox{}
+ \end{tabular}
+
+
+ \bigskip
+
+\vspace*{5mm}
+\begin{center}
+{12 de Mayo de 2016} \\
+\vspace{3mm}
+{\Large\bf Actualización GPA} \\
+\vspace{2mm}
+\end{center}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%MANENER FIJO ARRIBA%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Introducción}
+
+En el presente documento se explican las distintas modificaciones introducidas en el generador de propuestas automatico(GPA) y algunas consideraciones a tener en cuenta antes de usarlo. Es importante mencionar que todo aspecto que no se mencione acá, permanece constante con respecto a la versión anterior. Además, hay que notar que \textbf{esto no es un manual de uso} y que el instructivo antiguo sigue vigente.
+
+
+\section{Modificaciones}
+El fin de esta actualización fue tanto agregar fondos nuevos como remover los fondos obsoletos del GPA, además de corregir algunos errores gráficos que tenía el programa. En concreto, tras la actualización los cambios fueron los siguientes:
+\begin{itemize}
+
+\item Se eliminaron los fondos Trading, Deuda Soberana Multimoneda, Quant SVM, Acciones Estratégicas Colombia, US Alpha y Acciones Estratégicas Perú.
+
+\item Se agregaron los fondos Macro CLP 1.5, Macro CLP 3.0, Deuda Corporativa Investment Grade y Acciones US.
+
+\item Se agregaron las slides nuevas slides de antecedentes generales y de los nuevos fondos.
+
+\item Se arreglaron los problemas  que habían para generar algunos gráficos del GPA.
+
+\item Se actualizaron los indices de \emph{Bloomberg} que alimentan el programa.
+
+\item Se actualizó la recomendación de estrategia.
+
+\end{itemize}
+
+\section{Instalación}
+Tras la actualización, se tomó como medida reubicar el GPA en el computador de cada usuario con el fin de no sobrecargar las carpetas compartidas. Es por esto que si bien cada usuario va a tener su propio GPA, este debe estar ubicado en una ubicación fija para ser usado. Los pasos para instalar el programa son los siguientes:
+\begin{enumerate}
+\item En primer lugar se debe copiar el GPA a su computador, para esto se debe buscar la carpeta \texttt{GPA2} ubicada en
+\begin{center}
+\texttt{U:/GPA/Fernando Suarez/ } 
+\end{center}
+Dentro de la ubicación está una carpeta llamada \texttt{GPA2} la cual debe ser copiada y pegada en la siguiente ubicación:
+\begin{center}
+\texttt{C:/Usuarios/Acceso Público/ } 
+\end{center}
+Notar que esta ubicación no es compartida si no de cada computador, es importante que \textbf{no se le cambie el nombre a la carpeta y no se borre nada dentro de ella}, ya que si no el programa no será capaz de tomar los inputs necesarios para funcionar. Si es que todo salió bien, la ubicación del GPA dentro del computador debiese ser la siguiente:
+\begin{center}
+\texttt{C:/Usuarios/Acceso Público/GPA2/GPA.xlsm } 
+\end{center}
+\item Tras esto, el programa debe se habilitado para utilizar macros y los vínculos externos. Para esto sólo deben abrir \texttt{GPA.xlsm}. Luego, Excel requerirá que se activen las Macros y que se habilite la edición del archivo. Ante esto se debe aceptar y luego se lanzará un error(tranquilidad). Se debe cerrar el Excel y reabrir el GPA, luego de esto el GPA funcionará bien en régimen.
+
+\end{enumerate}
+\section{Modo de uso}
+Tal como se mencionó en la introducción, el modo de uso del GPA sigue siendo el mismo que en su versión anterior.
+
+En cuanto a las presentaciones, estas quedan guardadas en la misma ubicación del programa, es decir, en la carpeta \texttt{GPA2}. Es importante mencionar que en la misma ubicación hay una presentación llamada \texttt{Propuesta de Inversion.pptm} que \textbf{no debe ser borrada} ya que es el input inicial del programa.
+
+\section{Consideraciones}
+
+Dado que esto es una mera actualización, puede que existan casos bordes en que se generen errores. En este contexto, acá se presentan algunas consideraciones a tener en cuenta al utilizar el GPA:
+\begin{itemize}
+
+\item Puede que luego de seleccionar los distintos fondos/mandatos, el cuadro resumen del portfolio se vea con ciertos detalles gráficos. Esto \textbf{no significa} que la presentación saldrá mal. En cualquier caso, si se vuelve atrás y luego adelante nuevamente en el programa, la imagen saldrá corregida en la ventana.
+\item Muchas veces la presentación en Powerpoint toma varios segundos en generarse. Ante esto sólo se debe esperar, es recomendable usar el GPA con la menor cantidad de programas abiertos.
+\item Para mantener actualizadas al día la versión del GPA, tan sólo se debe copiar la carpeta GPA2 nueva por la versión antigua. Este archivo actualizado puede ser encontrado en: 
+\begin{center}
+\texttt{U:/GPA/Fernando Suarez/GPA2 } 
+\end{center}
+\item Para mantener actualizadas al día las diapositivas iniciales, tan sólo se debe cambiar el archivo \texttt{Propuesta de Inversion.pptm} por las slides que actualice estrategia. Este archivo actualizado puede ser encontrado en: 
+\begin{center}
+\texttt{U:/GPA/Repositorio/Diapositivas Generador de Propuestas/Propuesta de Inversion.pptm } 
+\end{center}
+
+\item \textbf{Importante: }Ante cualquier error en que se cierre el programa, se debe verificar que \texttt{Excel Maestro.xlsm} \textbf{se encuentre cerrado}. De otra forma, se bloquerá el acceso a otros posibles usuarios ya que sólo puede acceder una persona a la vez al GPA.
+\item Ante cualquier error que genere el GPA contactar a Fernando Suárez(anexo 764) o al responsable de turno que tenga el programa.
+
+\end{itemize}
+
+
+%
+%\bibliographystyle{alpha}  
+%\bibliography{biblio}   
+
+\end{document}
+
+

@@ -1,0 +1,29 @@
+﻿<Window x:Class="UpdaterCarteras.InstrumentoWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:UpdaterCarteras"
+        mc:Ignorable="d"
+        Title="Agregar Instrumento"  Height="350" Width="525" Background="#FF2B2B2B" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" Closed="Window_Closed">
+    <Canvas HorizontalAlignment="Left" Height="296" Margin="10,10,0,0" VerticalAlignment="Top" Width="498">
+        <Label x:Name="Label_Codigo_Emi" Content="Codigo Emisor" Canvas.Top="104" Foreground="#FFD4D4D4" Height="30" Width="100" RenderTransformOrigin="0.143,1.767" Canvas.Left="9"/>
+        <Label x:Name="Label_Codigo_Ins" Content="Codigo Instrumento" Canvas.Top="61" Foreground="#FFD4D4D4" Height="30" Width="130" RenderTransformOrigin="0.143,1.767" Canvas.Left="9"/>
+        <Label x:Name="Label_Nombre_Instrumento" Content="Nombre Instrumento" Canvas.Top="150" Foreground="#FFD4D4D4" Height="30" Width="130" RenderTransformOrigin="0.143,1.767" Canvas.Left="9"/>
+        <Label x:Name="Label_Tipo_Instrumento" Content="Tipo Instrumento" Canvas.Top="191" Foreground="#FFD4D4D4" Height="30" Width="130" RenderTransformOrigin="0.143,1.767" Canvas.Left="9"/>
+        <Label x:Name="Label_Riesgo" Content="Riesgo" Canvas.Top="62" Foreground="#FFD4D4D4" Height="30" Width="130" RenderTransformOrigin="0.143,1.767" Canvas.Left="293"/>
+        <Label x:Name="Label_Bienvenida" Content="Ingrese su nuevo instrumento" Canvas.Left="170" Canvas.Top="10" Foreground="#FFD4D4D4" Height="30" Width="190"/>
+        <TextBox x:Name="TextBox_Codigo_Ins" Height="23" Canvas.Left="138" TextWrapping="Wrap" Text="Ingrese el codigo" Canvas.Top="63" Width="120" RenderTransformOrigin="0.458,-0.217"/>
+        <ComboBox x:Name="ComboBox_Codigo_Emi" Canvas.Left="138" Canvas.Top="107" Width="120" IsEditable="True"/>
+        <ComboBox x:Name="ComboBox_Nombre_Instrumento" Canvas.Left="138" Canvas.Top="150" Width="120" IsEditable="True" RenderTransformOrigin="0.583,-0.136"/>
+        <ComboBox x:Name="ComboBox_Tipo_Instrumento" Canvas.Left="138" Canvas.Top="191" Width="120" IsEditable="True"/>
+        <ComboBox x:Name="ComboBox_Riesgo" Canvas.Left="346" Canvas.Top="61" Width="120" IsEditable="True"/>
+        <Button x:Name="Boton_Upload" Content="Subir" Canvas.Left="205" Canvas.Top="266" Width="90" Height="25" Click="Boton_Upload_Click" RenderTransformOrigin="0.111,1.2"/>
+        <Label x:Name="Label_Zona" Content="Zona" Canvas.Top="104" Foreground="#FFD4D4D4" Height="30" Width="130" RenderTransformOrigin="0.143,1.767" Canvas.Left="293"/>
+        <Label x:Name="Label_Renta" Content="Renta" Canvas.Top="145" Foreground="#FFD4D4D4" Height="30" Width="130" RenderTransformOrigin="0.143,1.767" Canvas.Left="293"/>
+        <ComboBox x:Name="ComboBox_Zona" Canvas.Left="346" Canvas.Top="107" Width="120" IsEditable="True"/>
+        <ComboBox x:Name="ComboBox_Renta" Canvas.Left="346" Canvas.Top="150" Width="120" IsEditable="True"/>
+        <CheckBox x:Name="checkBox_Es_LATAM_IG" Content="Es LATAM IG&#xA;" Canvas.Left="346" Canvas.Top="191" Height="22" Foreground="#FFD4D4D4" Width="90"/>
+    </Canvas>
+
+</Window>

@@ -1,0 +1,1 @@
+python fwd_curve_uploader.py %*

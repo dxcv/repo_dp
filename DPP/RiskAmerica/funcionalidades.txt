@@ -1,0 +1,2 @@
+- valor presente en fecha posterior a hoy.
+- valo presente dado una tasa.

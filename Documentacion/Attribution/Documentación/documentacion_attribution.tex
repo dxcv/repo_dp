@@ -1,0 +1,116 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage[english, spanish]{babel}
+\usepackage[dvips]{graphics}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{fullpage}
+\usepackage{epsfig}
+\usepackage{multicol}
+\usepackage{wasysym}
+
+\usepackage[usenames,dvipsnames]{xcolor} 
+\usepackage{hyperref} 
+\definecolor{linkcolour}{rgb}{0,0.2,0.6} 
+\hypersetup{colorlinks,breaklinks,urlcolor=linkcolour,linkcolor=linkcolour} 
+\newcommand{\parallelsum}{\mathbin{\!/\mkern-5mu/\!}}
+
+
+
+\parindent 0pt
+\parskip 0pt
+
+\begin{document}
+
+\includegraphics[width=4.4cm, height=1.7cm]{logor.png}
+\vspace*{-1.55cm}
+
+\hspace*{1.4 cm}
+ \hspace*{2.9 cm}
+ {\footnotesize
+ \begin{tabular}{l}
+  \sc IM Trust - Credicorp Capital\\
+  \sc Administradora General de Fondos \\
+  \sc Mesa de Gestión de Inversiones  \\
+  \sc Fernando Suárez  \\
+  \vspace{15\baselineskip}\mbox{}
+  \vspace{-3mm}\mbox{}
+ \end{tabular}
+}
+
+ \bigskip
+
+\vspace*{5mm}
+\begin{center}
+{\today} \\
+\vspace{3mm}
+{\Large\bf Reportería de Performance Attribution} \\
+\vspace{2mm}
+\end{center}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%MANENER FIJO ARRIBA%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Reportería de Performance Attribution}
+
+
+En el presente documento se detalla el funcionamiento y uso de la reportería de performance attribution. 
+\subsection{Fuente de datos}
+
+Este sistema de reportería se basa en 9 fuentes de datos:
+\begin{itemize}
+\item \textsc{ZHIS\_Carteras\_Recursive}
+\item \textsc{ZHIS\_Curva\_CLP}
+\item \textsc{ZHIS\_Curva\_CLF}
+\item \textsc{ZHIS\_USD\_CLP}
+\item \textsc{ZHIS\_CLF\_CLP}
+\item \textsc{ZHIS\_EUR\_CLP}
+\item \textsc{ZHIS\_MXN\_CLP}
+\item \textsc{FondosIR}
+\item \textsc{FWD\_Monedas\_Estatica}
+\end{itemize}
+
+
+\subsection{Funcionamiento}
+
+El sistema de reportería como tal, consiste en un script \texttt{performance\_attribution\_report\_controller.py} que corre a las 11:20 am en el servidor Wordpress. La ubicación relativa del script que se corre en el repositorio es la siguiente:
+\begin{center}
+\texttt{mesagi/Proyectos/portfolio\_analytics/performance\_attribution\_report}
+\end{center}
+
+A grandes rasgos, el sistema realiza las siguientes acciones:
+
+
+\begin{enumerate}
+\item Para cada fondo se obtiene el portfolio spot y su portfolio a cierre del mes pasado.
+\item Se filtran los instrumentos de ambos portfolios en base a un inner join.
+\item Por cada instrumento se computa su performance attribution en base a tres casos.
+\item El primer caso es cuando el instrumento es un bono para el cual tenemos la yield en la base de datos. En este caso
+el attribution se descompone por carry, inflation, spread, level, slope, curvature y FX. Es importante notar que para la
+descomposicion de la curva y el calculo del spread se calibra tanto la cura nominal como la real. El modelo que se utiliza
+es el de nelson siegel svensson con parametros fijos de $\tau_1 = 0.11$ y $\tau_2 = 1.0$. Los detalles de esta eleccion 
+pueden encontrarse en el siguiente \href{http://www.scielo.cl/pdf/rae/v29n2/art01.pdf}{paper del BCCH}.
+\item El segundo caso son los bonos que no cuentan con su yield en la base de datos. En este caso el retorno se descompone unicamente entre nivel y FX. Asumimos que todo el cambio de precio del bono va a nivel de curva.
+\item El ultimo caso son los forwards de moneda, para los cuales la descomposicion es unicamente por tipo de cambio.
+\item Luego de calcular el performance de todos los portfolios, se setean los portfolios con su descomposicion en la planilla excel con el informe y se envia por correo.
+\end{enumerate}
+
+Es importante notar que gran parte de las funciones que alimentan al reporte son obtenidas desde las librerías \textsc{yield\_curve.py} y \textsc{performance\_attribution.py}. 
+\subsection{Cómo agregar/borrar un fondo}
+Para agregar un nuevo fondo al reporte basta con alterar la tabla \textsc{FondosIR} seteando la columna \textsc{info\_attribution} en 1, notar que si un fondo deja estar activo basta con cambiar la columna active a 0. 
+
+
+\subsection{Posibles puntos de falla}
+
+
+En caso de que en algún día el reporte no corra o no se llegue el correo, se recomienda tomar en cuenta los siguientes puntos:
+\begin{itemize}
+
+\item Falta agregar un instrumento a \textsc{ZHIS\_Carteras\_Main}. En este caso basta con usar la interfaz de carga de instrumentos para subir el nuevo emisor/instrumento a la base de datos.
+
+\item Falta un indice o su historia. Si el script de descarga de indices falla o no se ha subido la historia de un indice el script de attribution se caerá. Hay que verificar que se hayan descargado los indices para el día hábil anterior.  Los indices son necesarios tanto para calibrar las curvas como para ver el retorno del tipo de cambio.
+
+\item No se tiene alguna librería de Python.
+
+\item El servidor esta apagado.
+\end{itemize}
+\end{document}
+
+

@@ -1,0 +1,87 @@
+INSTALACIONES PYTHON Y OTRAS COSAS
+
+Python:
+	- Checkear que la version corresponda a 64 o 32 bits, elegir .exe
+	- Si instalamos anaconda es mas facil
+	- Instalar y agregar python exe al path que esta en configuracion avanzada path
+	- Agregar pip tambien al path que esta en la misma carpeta pero en scrips
+	- Hacer update a pip
+	- python-pptx:
+		- bajar el lxml.whl
+		- instala con pip install whl
+		- despues instalar con pip el python-pptx
+	- win32api:
+		- bajar con pip el verdadero nombre es pypiwin32
+	- pymssql:
+		- bajar usando whl en la pagina clasica
+	- pypdf2 y xlwings:
+		- puro pip
+	- Bloomberg solo funciona con python 3.4s
+	- scrapy necesita Twisted que se baja de la pagina clasica
+
+Tareas Programadas
+	- Tienen que estar solo cuando el usuario haya iniciado sesion si no nunca corren
+	- No manda mails si es que le ponen ejecutar con permisos mas altos
+	- Se deben correr desde la ubicacion del archivo (poner en la tarea programada)
+
+SQL
+	- Las consultas con UNION no pueden tener order by
+	- Siempre subir datos a SQL Server con archivos .xls
+
+
+Bloomberg
+	- Para meter la caja poner la moneda curncy, Dividir por mil en mappings next next next, pa meter el cash
+
+Servidor
+	- usuario: wordpress clave: Credicorp2016 (el computador es wps)
+
+RiskAmerica
+	- usuario: ikovacevic@imtrust clave: Grange730 (Ya esta deshabilitada)
+	- usuario: iarrivillaga@imtrust.cl clave: Perupe2016
+	- usuario: fsuarez@imtrust.cl clave: 2pac2pac
+
+
+Indices
+	- Tienen que existir datos desde el 2011-01-03
+	- Se puede usar el uploader automatico cuando falta info pero hay que poner un try and catch en el loop !
+
+Conexiones BDD EXCEL
+	- datos -> desde otras fuentes -> poner una tabla chica y despues en properties le meti consultas -> quitar filtros despues !
+
+JP Morgan
+	- usuario: 
+	- clave: psychatog.123
+
+Reporte Inverisones:
+	- Si esq salen pocos fondos o ninguno puede ser que en indices dinamica haya un indice con dias de fds.
+
+DEUCSHE BANK:
+	- alvaro.taladriz@itau-unibanco.com.br
+	- PASS: Maria0712
+
+BD Regional:
+	- user: UsrGDARegional
+	- pass: j8736Hm152p
+
+
+
+Servidor nuevo:
+	- Nombre de maquina: VM-Wordpress
+	- Dirección IP: 10.234.2.12
+	- Usuario: assetmanagementchile            
+	- Clave: Credicorp2017
+	- Correo: assetmanagemenntchile@credicorpcapital.com
+
+
+bolsa:
+	- us: imtrustagf01
+	- ps: bolsa11
+
+pc jpa:
+	- usuario: 
+	- Agosto2016
+
+
+pc admin:
+	- .\administrador
+	- Imtcorp9

@@ -1,0 +1,117 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage[english, spanish]{babel}
+\usepackage[dvips]{graphics}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{fullpage}
+\usepackage{epsfig}
+\usepackage{multicol}
+\usepackage{wasysym}
+
+\usepackage[usenames,dvipsnames]{xcolor} 
+\usepackage{hyperref} 
+\definecolor{linkcolour}{rgb}{0,0.2,0.6} 
+\hypersetup{colorlinks,breaklinks,urlcolor=linkcolour,linkcolor=linkcolour} 
+\newcommand{\parallelsum}{\mathbin{\!/\mkern-5mu/\!}}
+
+
+
+\parindent 0pt
+\parskip 0pt
+
+\begin{document}
+
+\includegraphics[width=4.4cm, height=1.7cm]{logor.png}
+\vspace*{-1.55cm}
+
+\hspace*{1.4 cm}
+ \hspace*{2.9 cm}
+ {\footnotesize
+ \begin{tabular}{l}
+  \sc Credicorp Capital\\
+  \sc Administradora General de Fondos \\
+  \sc Mesa de Gestión de Inversiones  \\
+  \sc Fernando Suárez  \\
+  \vspace{15\baselineskip}\mbox{}
+  \vspace{-3mm}\mbox{}
+ \end{tabular}
+}
+
+ \bigskip
+
+\vspace*{5mm}
+\begin{center}
+{\today} \\
+\vspace{3mm}
+{\Large\bf Instalaciones} \\
+\vspace{2mm}
+\end{center}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%MANENER FIJO ARRIBA%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Instalaciones}
+
+
+En el presente documento se explica qué y como instalar antes de dejar el repositorio mesaGI funcionando en cualquier computador.
+
+\subsection{Python}
+
+Al instalar Python tenemos dos opciones, la primera es bajar Python directamente de la página oficial. Es importante notar que todos los scripts están programados en Python 3, por lo que esta debe ser la versión a bajar. 
+
+La segunda opción es bajar Anaconda u otro paquete de Python. La única ventaja que tiene, es que viene con una serie de librerías ya instaladas, sin embargo es más pesado y puede generar errores al topar con algunas librerías no incluídas.
+
+
+Otro punto importante, es que muchas veces Python no se agrega automáticamente al path del ordenador. Para agregarlo al path hay que localizar la ubicación de Python en el computador y agregarla con un ";" previo a  
+\begin{center}
+(click-derecho-windows)$\rightarrow$(sistema)$\rightarrow$(configuración-avanzada)$\rightarrow$(variables-entorno)$\rightarrow$(editar-path)
+\end{center}
+
+Además, es recomendable hacer lo mismo para pip\footnote{pip es un programa anexo de python para bajar librerias de manera rápida e intuitiva.}, el cual se instala automáticamente en la carpeta scripts en la misma altura que python. Hecho esto, se recomienda hacer update a pip.
+
+\subsection{Librerías}
+
+A continuación se detallan las principales librerías que el repositorio utiliza en los scripts y cómo bajarlas.
+\begin{itemize}
+\item \textsc{lxml} : Esta librería es base para mucha librerías y para instalarla es necesario bajar el archivo .whl del siguiente \href{http://www.lfd.uci.edu/~gohlke/pythonlibs/#lxml}{link}. 
+Notar que se debe bajar una versión consistente a los bits del pc y la versión de python. Para instalar basta con navegar por la consola hasta la ubicación del 
+archivo y ejecutar 
+\begin{center}
+\texttt{pip install archivo.whl}
+\end{center}
+
+\item \textsc{python-pptx} : Sirve para la integración de python con powerpoint, y tiene como requisito tener instalada la librería \textsc{lxml}. Para instalar esta librería basta con usar pip en cualquier ubicación con el comando 
+\begin{center}
+\texttt{pip install python-pptx}
+\end{center}
+
+\item \textsc{pywin32} : Sirve de base para muchas librerías ya que ayuda a interactuar con las applicaciones de office en general. Para instalar esta librería basta con usar pip en cualquier ubicación con el comando:
+\begin{center}
+\texttt{pip install pypiwin32}
+\end{center}
+
+\item \textsc{pymssql} : Sirve para integrar python y sql server. Para instalarla es necesario bajar el archivo .whl del siguiente \href{http://www.lfd.uci.edu/~gohlke/pythonlibs/#pymssql}{link}. 
+Notar que se debe bajar una versión consistente a los bits del pc y la versión de python. Para instalar basta con navegar por la consola hasta la ubicación del 
+archivo y ejecutar 
+\begin{center}
+\texttt{pip install archivo.whl}
+\end{center}
+
+
+\item \textsc{pypdf2} : Sirve para poder manipular archivos pdf. Para instalar esta librería basta con usar pip en cualquier ubicación con el comando:
+\begin{center}
+\texttt{pip install pypdf2}
+\end{center}
+
+
+\item \textsc{xlwings} : Sirve para poder integrar python con Excel. Para instalar esta librería basta con usar pip en cualquier ubicación con el comando:
+\begin{center}
+\texttt{pip install xlwings}
+\end{center}
+
+\item \textsc{blpapi} : Sirve para poder integrar python con Bloomberg. Para instalar esta librería es necesario tener Python 3.4 y no superior (no puede ser con Anaconda). Además, se debe estar en un computador con Bloomberg. Para instalarla se debe bajar el archivo correspondiende al version 3.4 de Python desde este \href{http://www.bloomberglabs.com/api/libraries/}{link}.
+
+
+
+\end{itemize}
+\end{document}
+
+

@@ -1,0 +1,134 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage[english, spanish]{babel}
+\usepackage[dvips]{graphics}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{fullpage}
+\usepackage{epsfig}
+\usepackage{multicol}
+\usepackage{wasysym}
+
+\usepackage[usenames,dvipsnames]{xcolor} 
+\usepackage{hyperref} 
+\definecolor{linkcolour}{rgb}{0,0.2,0.6} 
+\hypersetup{colorlinks,breaklinks,urlcolor=linkcolour,linkcolor=linkcolour} 
+\newcommand{\parallelsum}{\mathbin{\!/\mkern-5mu/\!}}
+
+
+
+\parindent 0pt
+\parskip 0pt
+
+\begin{document}
+
+\includegraphics[width=4.4cm, height=1.7cm]{logor.png}
+\vspace*{-1.55cm}
+
+\hspace*{1.4 cm}
+ \hspace*{2.9 cm}
+ {\footnotesize
+ \begin{tabular}{l}
+  \sc Credicorp Capital\\
+  \sc Administradora General de Fondos \\
+  \sc Mesa de Gestión de Inversiones  \\
+  \sc Fernando Suárez  \\
+  \vspace{15\baselineskip}\mbox{}
+  \vspace{-3mm}\mbox{}
+ \end{tabular}
+}
+
+ \bigskip
+
+\vspace*{5mm}
+\begin{center}
+{\today} \\
+\vspace{3mm}
+{\Large\bf Carga de Cartera de Benchmarks} \\
+\vspace{2mm}
+\end{center}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%MANENER FIJO ARRIBA%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Cartera Benchmarks}
+
+
+En el presente documento se detalla el proceso de carga de cartera de los benchmarks de los respectivos benchmarks a las bases de datos de la AGF.
+
+
+\subsection{Esquema de almacenamiento}
+
+
+\par Dada la necesidad de algunos fondos de compararse contra un benchmark, todos los días se almacena la cartera de cada benchmark en las bases de datos. Esto se almacena como información histórica y dependiendo del benchmark, los datos se obtienen de distintas fuentes de origen..
+
+El detalle de los esquemas para las tablas correspondientes al modelo de los benchmarks se encuentra en el Cuadro \ref{bmk-sch}.
+
+\begin{table}[h]
+{\scriptsize
+\fbox{\parbox{\textwidth}{
+\begin{itemize}
+ 
+ \item \textsc{Benchmarks\_Estatica} (\underline {Benchmark\_Id: integer}, Nombre\_Benchmark: string)\bigskip
+  
+ \item \textsc{Fondos\_Benchmark} (\underline{Codigo\_Fdo: string}, Benchmark\_Id: integer, Requiere\_Homologar: integer)\bigskip
+
+ \item \textsc{ZHIS\_Carteras\_Bmk} (\underline{Fecha: date, Codigo\_Fdo: string, Codigo\_Emi: string, Codigo\_Ins: string}, Weight: double, $\ldots$)\bigskip
+
+\end{itemize}
+}
+}}
+\caption{Esquema de tablas de almacenamiento cartera de benchmarks}
+\label{bmk-sch}
+\end{table}
+
+
+
+\subsection{Carga de Carteras}
+Para subir la posición diaria de cada benchmark a \textsc{ZHIS\_Carteras\_Bmk} se corre un script en el servidor Bloomberg de Portfolio Solutions. La ubicación relativa del script que se corre en el repositorio es la siguiente:
+\begin{center}
+\texttt{mesagi/Proyectos/descarga\_carteras\_benchmarks/BmkPosUploader.py}
+\end{center}
+
+Es imporante mencionar que la hora en que se corre el script no puede ser inferior a las 11am, dado que existen benchmarks que son subidos por RiskAmerica en ese horario. Otro punto a mencionar es que se descargan sólo fechas de Lunes a Viernes.
+\subsection{Funcionamiento}
+
+Tal como fue mencionado, existen dos fuentes desde donde se descargan las posiciones de los distintos benchmarks de los portfolios. A continuación se detalla a grandes razgos cómo funciona el script de carga de cartera de benchmarks:
+\begin{itemize}
+	\item Se descarga una lista con todos los fondos que compiten activamente contra un benchmark (columna alpha seekers)
+	\item Para cada fondo se detecta si su benchmark se aloja en Bloomberg o en RieskAmerica.
+	\item En el caso de Bloomberg, los datos se descargan directamente a través de la API BBL y luego se mapea cada ticker contra la tabla \textsc{Mapping\_BBL\_BCS}.
+	\item En el caso de RiskAmerica, los datos deben ser descargados desde su servidor SFTP. Los datos de conexión para este protocolo son los siguientes:
+	\begin{center}
+	servidor: sftp.riskamerica.com\\
+	usuario: AGF\_Credicorp\\
+	puerto: 22\\
+	clave: dX\{/"4YjA
+	\end{center}
+	\item Finalmente se carga la información a la tabla \textsc{ZHIS\_Carteras\_Bmk}.
+\end{itemize}
+
+\subsection{Carga de nuevos benchmarks}
+
+En caso de que se quiera agregar un nuevo benchmark a la base de datos, los pasos son los siguientes:
+
+\begin{enumerate}
+\item Agregar los indices que se necesiten para componer a la base de datos (ver documentación benchmarks). 
+\item Definir el benchmark con su nombre y moneda en \textsc{Benchmarks\_Estatica}.
+\item Asignar el benchmark a los distintos fondos/carteras correspondientes en \textsc{Fondos\_Benchmark}.
+\item Definir en FondosIR que el fondo es un alpha seeker y la fuente de donde proviene el benchmark.
+\end{enumerate}
+
+Finalmente, es importante mencionar que en caso de que un benchmark se deje de usar, \textbf{se recomienda fuertemente borrar toda su información}, tanto de las tablas estáticas como dinámicas.
+
+\subsection{Posibles puntos de falla}
+
+En caso de que en algún día los indices o los benchmarks no aparezcan a la fecha en las tablas, se recomienda tomar en cuenta los siguientes puntos:
+\begin{itemize}
+\item Si no hay datos de los benchmarks, corrobar que el script correrá en el servidor.
+\item Si un ticker no tiene información en la fecha de 20 días atrás o se descontinúa, entonces el programa que carga indices fallará. Si dejó de existir información historica de un indice, se debe consultar a Bloomberg help el origen de esta falta, lo mismo con RiskAmerica.
+\item Los benchmarks deben agregarse a la tabla benchmarks estática.
+\item El fondo debe estar declarado como alpha seeker en la tabla FondosIR.
+\end{itemize}
+
+
+\end{document}
+
+

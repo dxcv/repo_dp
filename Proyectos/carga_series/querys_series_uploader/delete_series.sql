@@ -1,0 +1,1 @@
+DELETE FROM dbo.ZHIS_Series_Main WHERE Fecha>='AUTODATE'

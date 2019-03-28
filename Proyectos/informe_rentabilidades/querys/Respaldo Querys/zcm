@@ -1,0 +1,56 @@
+SELECT        lagunillas.fecha, lagunillas.codigo_fdo, lagunillas.codigo_emi, lagunillas.codigo_ins, lagunillas.Monto, Instrumentos.Tipo_Instrumento, 
+                         CASE WHEN lagunillas.codigo_emi = 'PBONO' THEN 'SOL' ELSE dbo.lagunillas_monedas.nemomoneda END AS Moneda, Emisores.Sector, lagunillas.Monto /
+                             (SELECT        SUM(Monto) AS Expr1
+                               FROM            dbo.LAGUNILLAS_ZHIS_Carteras_Agregado AS ag
+                               WHERE        (fecha = lagunillas.fecha) AND (codigo_fdo = lagunillas.codigo_fdo)) AS Weight, CASE WHEN lagunillas.nominal = 0 THEN lagunillas.cantidad ELSE lagunillas.nominal END AS nominal, lagunillas.Cantidad, 
+                         CASE WHEN lagunillas.codigo_ins = 'PAGARE NR' OR
+                         lagunillas.codigo_ins = 'PDBC' THEN 100 * lagunillas.monto / lagunillas.nominal WHEN lagunillas.codigo_ins = 'PAGARE R' THEN 100 * lagunillas.monto / (lagunillas.nominal *
+                             (SELECT        valor
+                               FROM            zhis_clf_clp uf
+                               WHERE        uf.fecha = lagunillas.fecha)) ELSE lagunillas.precio_mdo END AS Precio, CASE WHEN dbo.lagunillas_monedas.nemomoneda = 'UF' THEN 100 * lagunillas.monto / (lagunillas.nominal *
+                             (SELECT        valor
+                               FROM            zhis_clf_clp clf
+                               WHERE        clf.fecha = lagunillas.fecha)) WHEN dbo.lagunillas_monedas.nemomoneda = 'US$' THEN 100 * lagunillas.monto / (lagunillas.nominal *
+                             (SELECT        valor
+                               FROM            zhis_usd_clp usd
+                               WHERE        usd.fecha = lagunillas.fecha)) WHEN dbo.lagunillas_monedas.nemomoneda = 'EU' THEN 100 * lagunillas.monto / (lagunillas.nominal *
+                             (SELECT        valor
+                               FROM            zhis_eur_clp eur
+                               WHERE        eur.fecha = lagunillas.fecha)) WHEN dbo.lagunillas_monedas.nemomoneda = 'MX' THEN 100 * lagunillas.monto / (lagunillas.nominal *
+                             (SELECT        valor
+                               FROM            zhis_mxn_clp mxn
+                               WHERE        mxn.fecha = lagunillas.fecha)) WHEN lagunillas.codigo_emi = 'PBONO' THEN 100 * lagunillas.monto / (lagunillas.nominal *
+                             (SELECT        valor
+                               FROM            zhis_pen_clp pen
+                               WHERE        pen.fecha = lagunillas.fecha)) ELSE 100 * lagunillas.monto / lagunillas.nominal END AS Precio_Dirty, CASE WHEN lagunillas.codigo_emi IN ('LEBAC', 'TREASURY') THEN CAST(Datediff(day, CONVERT(DATE, 
+                         lagunillas.fecha), lagunillas.fec_vcto) AS FLOAT) / 365 ELSE lagunillas.duration END AS duration, CASE WHEN lagunillas.codigo_ins = 'PAGARE NR' AND 
+                         dbo.lagunillas_monedas.nemomoneda = '$' THEN 12 * lagunillas.tasa_mdo ELSE lagunillas.tasa_mdo END AS Tasa, Instrumentos.Riesgo, Emisores.Nombre_Emisor, Instrumentos.Nombre_Instrumento, lagunillas.fec_vcto, 
+                         Emisores.Pais_Emisor, Estrategias.Estrategia, Instrumentos.Zona, Instrumentos.Renta, map_clasif.Riesgo_Internacional, lagunillas.tasa_com AS Tasa_Compra, fondos.Moneda AS Moneda_Fdo, 
+                         CASE WHEN cinta.spread IS NULL THEN 0.0 ELSE cinta.spread / 100 END AS Spread, CASE WHEN lagunillas.duration <> 0.0 AND cinta.spread IS NOT NULL THEN (cinta.spread / 100) 
+                         / lagunillas.duration ELSE 0.0 END AS Spread_Carry, cinta.Riesgo_RA, 
+                         CASE WHEN cinta.tipo = 'BCA' THEN 'Bono Convertible Acciones' WHEN cinta.tipo = 'BCP' THEN 'Bono Central Peso' WHEN cinta.tipo = 'BCS' THEN 'Bono Securitizado' WHEN cinta.tipo = 'BCU' THEN 'Bono Central UF' WHEN cinta.tipo
+                          = 'BEF' THEN 'Bono Bancario' WHEN cinta.tipo = 'BHM' THEN 'Bono Hipotecario' WHEN cinta.tipo = 'BRP' THEN 'Bono Reconocimiento' WHEN cinta.tipo = 'BSF' THEN 'Bono Subordinado' WHEN cinta.tipo = 'BTP' THEN 'Bono Tesoro Peso'
+                          WHEN cinta.tipo = 'BTU' THEN 'Bono Tesoro UF' WHEN cinta.tipo = 'BVL' THEN 'Bono Vivienda' WHEN cinta.tipo = 'CERO' THEN 'Bono Cero' WHEN cinta.tipo = 'DEB' THEN 'Bono Empresa' WHEN cinta.tipo = 'DPF' THEN 'Deposito'
+                          WHEN cinta.tipo = 'ECO' THEN 'Efecto Comercio' WHEN cinta.tipo = 'LHF' THEN 'Letra Hipotecaria' WHEN cinta.tipo = 'PDC' THEN 'PDBC Peso' WHEN cinta.tipo = 'PRC' THEN 'PDBC UF' ELSE 'N/A' END AS Tipo_Ra
+FROM            dbo.LAGUNILLAS_ZHIS_Carteras_Agregado AS lagunillas LEFT OUTER JOIN
+                         dbo.Emisores AS Emisores ON Emisores.Codigo_Emi = lagunillas.codigo_emi COLLATE database_default LEFT OUTER JOIN
+                         dbo.Instrumentos AS Instrumentos ON Instrumentos.Codigo_Emi = lagunillas.codigo_emi COLLATE database_default AND Instrumentos.Codigo_Ins = lagunillas.codigo_ins COLLATE database_default LEFT OUTER JOIN
+                         dbo.LAGUNILLAS_Monedas ON dbo.LAGUNILLAS_Monedas.CodMoneda = lagunillas.tipo_reaj LEFT OUTER JOIN
+                         dbo.Estrategias AS Estrategias ON Estrategias.Codigo_Fdo = lagunillas.codigo_fdo COLLATE database_default AND Estrategias.Codigo_Emi = lagunillas.codigo_emi COLLATE database_default AND 
+                         Estrategias.Codigo_Ins = lagunillas.codigo_ins COLLATE database_default LEFT OUTER JOIN
+                         dbo.Mapping_Clasificacion AS map_clasif ON map_clasif.Riesgo_CL = Instrumentos.Riesgo LEFT OUTER JOIN
+                         dbo.FondosIR AS fondos ON lagunillas.codigo_fdo = fondos.Codigo_Fdo COLLATE database_default LEFT OUTER JOIN
+                         dbo.Cinta_Valorizacion AS cinta ON cinta.Codigo_Ins = lagunillas.codigo_ins COLLATE database_default AND cinta.Fecha = lagunillas.fecha COLLATE database_default
+WHERE        (lagunillas.codigo_fdo <> lagunillas.codigo_emi) AND (lagunillas.codigo_ins NOT IN ('PUCOBRE-A', 'MXCHF0922', 'COLBUN', 'AESGENER')) AND (lagunillas.codigo_fdo NOT IN ('IN_CATAL 15', 'INV.RAMLAP')) AND 
+                         (lagunillas.codigo_fdo <> lagunillas.codigo_emi) AND (lagunillas.nominal <> 0.0)
+
+
+
+
+
+
+
+
+
+
+

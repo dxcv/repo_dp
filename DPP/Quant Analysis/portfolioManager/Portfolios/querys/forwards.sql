@@ -1,0 +1,2 @@
+SELECT Fecha_Op, Codigo_Fdo, Fecha_Fix, Fecha_Vcto, Codigo_Emi, Moneda_Compra, Moneda_Venta, Nominal_Compra, Nominal_Venta, Precio_Pactado, Estrategia, Tipo
+FROM [MesaInversiones].[dbo].[FWD_Monedas_Estatica] WHERE Fecha_Vcto > 'AUTODATE'

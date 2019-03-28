@@ -1,0 +1,20 @@
+SELECT Ltrim(Rtrim(fecha))               AS date,
+       Ltrim(Rtrim(codigo_fdo))          AS name,
+       Ltrim(Rtrim(codigo_emi))          AS issuer_code,
+       Ltrim(Rtrim(codigo_ins))          AS instrument_code, 
+       Weight				 AS pct_fund,
+       Ltrim(Rtrim(Tipo_instrumento))          AS instrument_type,
+       Ltrim(Rtrim(Moneda))              AS currency,
+       Ltrim(Rtrim(Sector))              AS sector, 
+       Monto 				 AS market_value,
+       Cantidad 			 AS nominal_amount,
+       Precio 				 AS price,
+       Duration 			 AS duration,
+       Tasa 				 AS yield_db,
+       Ltrim(Rtrim(Riesgo))              AS risk, 
+       Ltrim(Rtrim(Nombre_Emisor))       AS issuer_name,
+       Ltrim(Rtrim(Nombre_Instrumento))  AS instrument_name,
+       Ltrim(Rtrim(Fec_Vcto))            AS maturity_date,
+       Weight * duration                 AS ctd
+FROM   dbo.ZHIS_Carteras_Main
+WHERE  fecha = 'AUTODATE'

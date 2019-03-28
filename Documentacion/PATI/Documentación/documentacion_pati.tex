@@ -1,0 +1,122 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage[english, spanish]{babel}
+\usepackage[dvips]{graphics}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{fullpage}
+\usepackage{epsfig}
+\usepackage{multicol}
+\usepackage{wasysym}
+
+\usepackage[usenames,dvipsnames]{xcolor} 
+\usepackage{hyperref} 
+\definecolor{linkcolour}{rgb}{0,0.2,0.6} 
+\hypersetup{colorlinks,breaklinks,urlcolor=linkcolour,linkcolor=linkcolour} 
+\newcommand{\parallelsum}{\mathbin{\!/\mkern-5mu/\!}}
+
+
+
+\parindent 0pt
+\parskip 0pt
+
+\begin{document}
+
+\includegraphics[width=4.4cm, height=1.7cm]{logor.png}
+\vspace*{-1.55cm}
+
+\hspace*{1.4 cm}
+ \hspace*{2.9 cm}
+ {\footnotesize
+ \begin{tabular}{l}
+  \sc IM Trust - Credicorp Capital\\
+  \sc Administradora General de Fondos \\
+  \sc Mesa de Gestión de Inversiones  \\
+  \sc Fernando Suárez  \\
+  \vspace{15\baselineskip}\mbox{}
+  \vspace{-3mm}\mbox{}
+ \end{tabular}
+}
+
+ \bigskip
+
+\vspace*{5mm}
+\begin{center}
+{\today} \\
+\vspace{3mm}
+{\Large\bf Portfolio Analytics Tool for Investors (PATI)} \\
+\vspace{2mm}
+\end{center}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%MANENER FIJO ARRIBA%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{PATI}
+
+
+En el presente documento se detalla el funcionamiento y uso de la interfaz PATI. 
+
+\subsection{Fuente de datos}
+
+Este sistema de visualización de portfolios se basa en 7 fuentes de datos:
+\begin{itemize}
+\item \textsc{ZHIS\_Carteras\_Recursive}
+\item \textsc{ZHIS\_Carteras\_Bmk}
+\item \textsc{Indices\_Dinamica}
+\item \textsc{Indices\_Estatica}
+\item \textsc{FM\_Plan\_Cuentas}
+\item \textsc{FondosIR}
+\item \textsc{FWD\_Monedas\_Estatica}
+\end{itemize}
+
+
+\subsection{Funcionamiento}
+
+La itnerfaz como tal, consiste en un script \texttt{ViewController.py} que utiliza funciones de la libreria \textsc{portfolio\_analytics.py} para desplegar la cartera activa de los portfolios en la interfaz \textsc{MainView.py}. La ubicación relativa del script en el repositorio es la siguiente:
+\begin{center}
+\texttt{mesagi/Proyectos/analisis\_portoflios/interfaz\_portfolios/ViewController.py}
+\end{center}
+
+El sistema calcula ara cada par (fecha, fondo) el detalle de la cartera junto con sus respectivas metricas de riesgo. Los pasos para calcularlas son los siguientes:
+
+\begin{enumerate}
+\item Se construye una matriz de varianza-covarianza con decaimiento exponencial. Para esto, se descarga la data historica de todos los indices que maneja la mesa de inversiones desde \textsc{Indices\_Dinamica}.
+\item Se obtiene la cartera de los portfolios con cada instrumento mapeado a un indice. Los instrumentos que se consideran son los existentes en SIGA, más una estimación de la caja de los fondos en distintas monedas y los forwards pactados a la fecha. Adenás, es importante notar que se utiliza la vista \textsc{ZHIS\_Carteras\_Recursive} para obtener la posicion de las cuotas de fondo desagregadas para un nivel de anidación.
+\item Tambien se descarga la cartera mapeada de todos los benchmarks. Dada la complejidad de esta operación, se considera sólo para fondos que compiten activamente contra un benchmark (alpha seekers).
+\item Luego se calcula el producto punto entre los weights y la matriz de varianza covarianza para obtener la volatilidad ex ante de cada portfolio. Además, se obtienen distintas métricas tanto de \emph{contribution to risk} como de \emph{marginal contribution to risk}.
+\end{enumerate}
+
+Es importante notar que gran parte de las funciones que alimentan al reporte son obtenidas desde la librería \textsc{portfolio\_analytics.py}. El archivo correspondiente a esta librería puede encontrarse en: 
+\begin{center}
+\texttt{mesagi/Proyectos/analisis\_portoflios/funciones\_analisis\_portfolios/portfolio\_analytics.py}
+\end{center}
+
+Además, para generar la interfaz basta con compilar el archivo \textsc{MainView.ui} utilizando el comando:
+
+\begin{center}
+\texttt{compile view pyuic5 -x MainView.ui -o MainView.py}
+\end{center}
+
+
+\subsection{Cómo agregar/borrar un fondo}
+Para agregar un nuevo fondo al reporte basta con alterar la tabla \textsc{FondosIR} seteando la columna \textsc{info\_invest} en 1, notar que si un fondo deja estar activo basta con cambiar la columna active a 0. 
+
+En caso de que sea necesario agregar un benchmark, se deben alterar las tablas correspondientes que se mencionan en el documento de benchmarks. Además, si falta mapear algún instrumento esto se debe hacer en la consulta \textsc{map\_master} y \textsc{map\_master\_bmk}.
+
+
+\subsection{Posibles puntos de falla}
+
+
+En caso de que en algún día el reporte no corra o no se llegue el correo, se recomienda tomar en cuenta los siguientes puntos:
+\begin{itemize}
+
+\item Falta agregar un instrumento a \textsc{ZHIS\_Carteras\_Main}. En este caso basta con usar la interfaz de carga de instrumentos para subir el nuevo emisor/instrumento a la base de datos.
+
+\item Falta mapear un instrumento a un indice. En este caso hay que editar la consulta \textsc{map\_master} y \textsc{map\_master\_bmk} para mapear el nuevo instrumento a un indice representativo.
+
+\item Falta un indice o su historia. Si el script de descarga de indices falla o no se ha subido la historia de un indice el script del controlador se caerá. Hay que verificar que se hayan descargado los indices para el día hábil anterior. 
+
+\item \textsc{ZHIS\_Carteras} no está al día. A pesar de que pasa con poca frecuencia, esto es la causa más común de fallas. Para reparlo hay que hablar con operaciones ya que es una vista materializada que se abastece del servidor Lagunillas.
+
+\item No se tiene alguna librería de Python.
+\end{itemize}
+\end{document}
+
+

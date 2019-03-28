@@ -1,0 +1,4 @@
+La curva en UF usar la inflación de icap
+para los graficos de la pagina 2 también
+y la curva swap también usar los forwards para que se parezcan a los de la curva uf soberana. Hoy en dia la swap se construye solo con los puntos swaps y queda distinta.
+

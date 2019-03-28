@@ -1,0 +1,1 @@
+select top 1 fecha from ZHIS_AFP_moneda_final where tipo_fondo='E' order by fecha desc

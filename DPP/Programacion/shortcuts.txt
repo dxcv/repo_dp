@@ -1,0 +1,2 @@
+Ctrl + A   selecciona todo
+Ctrl+ shift + L selecciona todas las lineas al final. si se apreta flecha izquierda se va al principio

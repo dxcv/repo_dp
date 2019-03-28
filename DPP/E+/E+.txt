@@ -1,0 +1,12 @@
+1. Abrir excel gestionvXs. Actualizar Recursive.
+2. Excel gestionvXs. Ir a base completa, filtrar por el fondo E+.
+3. Se copia la hoja base completa del excel gestionvXs hasta la columna R "nombre_instrumento". El destino es el excel "eP" en la columna E Plus Recursive.
+4. En el excel "eP" Puede ser que haya cambiado el numero de instrumentos por lo que se deben ajustar las columnas S y T. Para que calculen las formulas en el caso de que el
+número de instrumentos haya cambiado. (es solo bajar las formulas que están al lado de nombre_instrumento). 
+5. copiar los 4 cuadros superiores izquierdos de la hoja "Dashboard" del excel eP en la presentación.
+
+Planilla retorno
+1.refresh -> trae valores cuota
+2. el valor cuota del dia t en bloomberg, es en verdad el valor cuota del día t-1 en la super de pensiones.
+3. en tabla retorno se debe cambiar la fecha fin, poniendo el ultimo dia donde hay valor cuota para todas las afp.
+4. se debe procurar que todos los 

@@ -1,0 +1,1 @@
+python indexes_uploader.py %*

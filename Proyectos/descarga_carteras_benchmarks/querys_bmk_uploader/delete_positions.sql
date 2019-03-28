@@ -1,0 +1,1 @@
+DELETE FROM dbo.ZHIS_Carteras_Bmk WHERE Fecha>='AUTODATE'

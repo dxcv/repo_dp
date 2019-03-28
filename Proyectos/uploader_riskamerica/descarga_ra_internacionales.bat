@@ -1,0 +1,1 @@
+python uploader_riskamerica_internacional.py %*

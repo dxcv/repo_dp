@@ -1,0 +1,43 @@
+{
+  "fund_id": "MACRO CLP3",
+  "instruments": [
+    {
+      "codigo_emi": "BTU",
+      "codigo_ins": "BTU0150321",
+      "cantidad": -145000,
+      "precio": 103.026
+    },
+    {
+      "codigo_emi": "BTP",
+      "codigo_ins": "BTP0450326",
+      "cantidad": 1850000000,
+      "precio": 102.03,
+      "tipo_instrumento": "Bono de Gobierno",
+      "moneda": "$",
+      "duration": 7.167,
+      "tasa": 4.32,
+      "riesgo": "AAA",
+      "fec_vcto": "1900-01-01",
+      "pais_emisor": "CL",
+      "Index_Id": 132,
+      "sector": "Gobierno",
+      "riesgo_internacional": "A"
+    },
+    {
+      "codigo_emi": "BTP",
+      "codigo_ins": "BTP0450321",
+      "cantidad": 750000000,
+      "precio": 103.26,
+      "tipo_instrumento": "Bono de Gobierno",
+      "moneda": "$",
+      "duration": 4.044,
+      "tasa": 3.80,
+      "riesgo": "AAA",
+      "fec_vcto": "1900-01-01",
+      "pais_emisor": "CL",
+      "Index_Id": 130,
+      "sector": "Gobierno",
+      "riesgo_internacional": "A"
+    }
+  ]
+}

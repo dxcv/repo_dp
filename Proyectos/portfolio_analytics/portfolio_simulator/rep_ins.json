@@ -1,0 +1,72 @@
+[
+  {
+    "codigo_emi": "BTU",
+    "codigo_ins": "BTUFAKE",
+    "tipo_instrumento": "Bono de Gobierno",
+    "moneda": "UF",
+    "cantidad": 40000,
+    "precio": 103.2,
+    "duration": 5.0,
+    "tasa": 6.0,
+    "riesgo": "AAA",
+    "fec_vcto": "1900-01-01",
+    "pais_emisor": "CL",
+    "Index_Id": 139,
+    "sector": "Gobierno",
+    "riesgo_internacional": "A"
+  },
+  {
+    "codigo_emi": "AGROSUPER",
+    "codigo_ins": "BAGROFAKE",
+    "tipo_instrumento": "Bono Corporativo",
+    "moneda": "$",
+    "cantidad": 1000000000,
+    "precio": 102.7,
+    "duration": 1.47,
+    "tasa": 4.55,
+    "riesgo": "AA-",
+    "fec_vcto": "1900-01-01",
+    "pais_emisor": "CL",
+    "Index_Id": 107,
+    "sector": "Salud",
+    "riesgo_internacional": "BBB"
+  },
+  {
+    "codigo_emi": "BREAL",
+    "codigo_ins": "BREAL",
+    "tipo_instrumento": "Bono de Gobierno",
+    "moneda": "REA",
+    "cantidad": 500000,
+    "precio": 100.7164,
+    "duration": 5.765,
+    "tasa": 10.2399,
+    "riesgo": "A-",
+    "fec_vcto": "1900-01-01",
+    "pais_emisor": "CL",
+    "Index_Id": 80,
+    "sector": "Gobierno",
+    "riesgo_internacional": "bb"
+  },
+  {
+    "codigo_emi": "SMU",
+    "codigo_ins": "BSMUFAKE",
+    "tipo_instrumento": "Factura",
+    "moneda": "UF",
+    "cantidad": 109107,
+    "precio": 95,
+    "duration": 0.3,
+    "tasa": 4.9,
+    "riesgo": "BB-",
+    "fec_vcto": "1900-01-01",
+    "pais_emisor": "CL",
+    "Index_Id": 156,
+    "sector": "Algo",
+    "riesgo_internacional": "BBB-"
+  },
+  {
+    "codigo_emi": "AQUACHILE",
+    "codigo_ins": "AQUACHILE",
+    "cantidad": 50000,
+    "precio": 160.14
+  }
+]

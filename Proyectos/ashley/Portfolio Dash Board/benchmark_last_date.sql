@@ -1,0 +1,1 @@
+select top 1 fecha from zhis_carteras_pg_renta order by fecha desc

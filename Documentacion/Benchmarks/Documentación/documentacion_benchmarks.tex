@@ -1,0 +1,177 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage[english, spanish]{babel}
+\usepackage[dvips]{graphics}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{fullpage}
+\usepackage{epsfig}
+\usepackage{multicol}
+\usepackage{wasysym}
+
+\usepackage[usenames,dvipsnames]{xcolor} 
+\usepackage{hyperref} 
+\definecolor{linkcolour}{rgb}{0,0.2,0.6} 
+\hypersetup{colorlinks,breaklinks,urlcolor=linkcolour,linkcolor=linkcolour} 
+\newcommand{\parallelsum}{\mathbin{\!/\mkern-5mu/\!}}
+
+
+
+\parindent 0pt
+\parskip 0pt
+
+\begin{document}
+
+\includegraphics[width=4.4cm, height=1.7cm]{logor.png}
+\vspace*{-1.55cm}
+
+\hspace*{1.4 cm}
+ \hspace*{2.9 cm}
+ {\footnotesize
+ \begin{tabular}{l}
+  \sc Credicorp Capital\\
+  \sc Administradora General de Fondos \\
+  \sc Mesa de Gestión de Inversiones  \\
+  \sc Fernando Suárez  \\
+  \vspace{15\baselineskip}\mbox{}
+  \vspace{-3mm}\mbox{}
+ \end{tabular}
+}
+
+ \bigskip
+
+\vspace*{5mm}
+\begin{center}
+{\today} \\
+\vspace{3mm}
+{\Large\bf Benchmarks e Indices} \\
+\vspace{2mm}
+\end{center}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%MANENER FIJO ARRIBA%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Benchmarks e Indices}
+
+
+En el presente documento se detalla la arquitectura de las tablas y sistemas que mantienen el almacenamiento de indices y benchmarks utilizados en la mesa.
+
+
+\subsection{Esquema de almacenamiento}
+
+
+\par Un benchmark puede ser visto como una composicion de 1 o más indices. Para representar esto en la base de datos se consideran dos tipos de tablas: dinamicasy estáticas. Por un lado, las tablas estáticas marcan la información que no cambia en el tiempo, tanto para indices como para benchmarks. Por otro lado, las tablas dinamicas almacenan la información historica del indice (i.e. su valor).
+
+ En adición a las tablas descritas, la tabla \textsc{Benchmarks\_Composicion} almacena la composición de cada benchmark en función de los indices que lo estructuran. Finalmente la relación \textsc{Fondos\_Benchmark} asigna a cad fondo (cartera) su benchmark correspondiente. El detalle de los esquemas para las tablas descritas se encuentra en el Cuadro \ref{bmk-sch}.
+
+\begin{table}[h]
+{\small
+\fbox{\parbox{\textwidth}{
+\begin{itemize}
+ \item \textsc{Indices\_Estatica} (\underline{Index\_Id: integer}, Ticker: string, Nombre\_Index: string)\bigskip
+ 
+ 
+ \item  \textsc{Indices\_Dinamica} (\underline{Fecha: date, Index\_Id: integer}, Valor: double)\bigskip
+ 
+ 
+  \item \textsc{Benchmarks\_Estatica} (\underline {Benchmark\_Id: integer}, Nombre\_Benchmark: string)\bigskip
+ 
+ 
+ \item  \textsc{Benchmarks\_Composicion} (\underline {Benchmark\_Id: integer, Index\_Id: integer}, Weight: double)\bigskip
+ 
+ 
+  \item \textsc{Benchmarks\_Dinamica} (\underline{Fecha: date, Benchmark\_Id: integer}, Valor: double)\bigskip
+ 
+ 
+  \item \textsc{Fondos\_Benchmark} (\underline{Codigo\_Fdo: string}, Benchmark\_Id: integer, Requiere\_Homologar: integer)\bigskip
+
+
+ 
+\end{itemize}
+}
+}}
+\caption{Esquema de tablas de almacenamiento de indices y benchmarks}
+\label{bmk-sch}
+\end{table}
+
+
+
+\subsection{Carga de indices}
+Para subir la información historica de los indices a \textsc{Indices\_Dinamica}, se utiliza la API de Bloomberg disponible en el computador de Portfolio Solutions. En concreto, se tiene un script en Python que corre todos los días a las 11am y descarga el valor de los últimos 20 días presentes en la tabla \textsc{Indices\_Estatica}\footnote{Borra todas la tuplas de los últimos 20 días e inserta los nuevos datos.}. La ubicación relativa del script que se corre en el repositorio es la siguiente:
+\begin{center}
+\texttt{mesagi/Proyectos/descarga\_indices/IndexesUploader.py}
+\end{center}
+
+Es imporante mencionar que la hora en que se corre el script no puede ser inferior a las 11am, dado que gran parte de los indices son subidos por RiskAmerica en ese horario. Otro punto a mencionar es que se descargan sólo fechas de Lunes a Viernes. Esta desición se tomó ya que la mayoría de los activos que se manejan no se transan los fines de semana.
+
+\subsection{Composición de benchmarks}
+
+
+Tal como fue mencionado anteriormente, los benchmark se componen en base a la suma ponderada de ciertos indices. Esto también se realiza de manera diaria, pero en el servidor Wordpress. Todos los días a las 11:10am corre un script en Python que compone todos los benchmarks de la tabla \textsc{Benchmarks\_Estatica} en función de los pesos almacenados en \textsc{Benchmarks\_Composicion}. Nuevamente, el horario en que corre el script debe ser posterior a la carga de indices, de otra forma, el output no será el correcto o sencillamente el programa caerá.
+
+
+Luego de componer los vectores, el script borra toda la historia de \textsc{Benchmarks\_Dinamica} y luego sube los nuevos valores historicos, a diferencia del caso de los indices donde sólo se toman 20 días. La razón de esto es que el código se puede complciar para mantener la base del indice. Sin embargo, como el tiempo de composición y carga no es elevado, se puede permitir esta holgura. La ubicación relativa del script que se corre en el repositorio es la siguiente:
+\begin{center}
+\texttt{mesagi/Proyectos/composicion\_benchmarks/BenchmarksCompounder.py}
+\end{center}
+
+
+Es importante mencionar que los benchmarks se componen en la misma moneda en que se lleva la contabilidad del fondo. En este sentido, el script multiplica por el dolar observado cada indice en dolares de la composicion de cualquier benchmark que sea en pesos. Es por esto, que un aspecto importantísimo es \textbf{no borrar ni cambiar el indice asignado al dolar observado}, en otro caso, el script dejará de funcionar. 
+
+Además, hay que notar que todos los benchmarks se suben en base mil para manejarlos de manera homogénea.
+
+\subsection{Carga de nuevos indices y benchmarks}
+
+En caso de que se quiera agregar un nuevo indice a la base de datos, los pasos son los siguientes:
+
+\begin{enumerate}
+\item Agregar el indice con su información respectiva \textsc{Indices\_Estatica}
+\item Subir la información histórica del indice a \textsc{Indices\_Dinamica} a mano, es importante ser consistente con la moneda en que se suben los indices con la que se especifica en la tabla estatica.
+\end{enumerate}
+
+\emph{\textbf{Importante: }}Por convención de la AGF, se decidió bajar la historia de los indices desde el 2011-01-03, por lo que se debe bajar historia desde esa fecha.
+\bigskip
+
+En caso de que se quiera agregar un nuevo benchmark a la base de datos, los pasos son los siguientes:
+
+\begin{enumerate}
+\item Agregar los indices que se necesiten para componer a la base de datos (tal como el paso anterior). En caso de que ya estén todos los indices, se puede omitir este paso.
+\item Definir el benchmark con su nombre y moneda en \textsc{Benchmarks\_Estatica}.
+\item Definir la composición del benchmark en \textsc{Benchmarks\_Composicion}.
+\item Asignar el benchmark a los distintos fondos/carteras correspondientes en \textsc{Fondos\_Benchmark}.
+\end{enumerate}
+
+Finalmente, es importante mencionar que en caso de que un indice/benchmark se deje de usar, \textbf{se recomienda fuertemente borrar toda su información}, tanto de las tablas estáticas como dinámicas.
+
+\subsection{Posibles puntos de falla}
+
+En caso de que en algún día los indices o los benchmarks no aparezcan a la fecha en las tablas dinamicas, se recomienda tomar en cuenta los siguientes puntos:
+\begin{itemize}
+\item Si no hay datos de los benchmarks, corrobar que los indices estén a la fecha.
+\item Si un ticker no tiene información en la fecha de 20 días atrás o se descontinúa, entonces el programa que carga indices fallará. Si dejó de existir información historica de un indice, se debe consultar a Bloomberg help el origen de esta falta.
+\item Si hay información de todos los indices y aún así no hay benchmarks, peude ser que falte declarar la composición o la definición en la tabla estática.
+\end{itemize}
+
+{\textbf{Advertencia: }Es muy importante notar que para la descargar de indices se utiliza la librería TIA. Esta librería fue desarrollada para Python 2 y no existe actualmente una versión para Python 3. Dado esto, se editaron las secciones de la librería para que soportara Python 3. Dado esto, ante cualquier reinstalación de la libreria u cambio de terminal se deberá editar nuevamente la librería a mano.}
+
+
+\iffalse
+
+\section{Carteras Representativa}
+
+{\small
+\begin{itemize}
+  \item Cartera\_Representativa\_Estatica(\underline {Codigo\_Cartera: string}, Perfil: string,  Tipo: string, Nombre\_Representativa: string, Benchmark\_Id: integer)\bigskip
+
+
+  \item Cartera\_Representativa\_Composicion(\underline{Codigo\_Cartera: string, Codigo\_Fdo: string}, Weight: double)\bigskip
+
+
+  \item Cartera\_Representativa\_Serie(\underline{Fecha: date, Codigo\_Cartera: string}, Valor: double)\bigskip
+
+  \item Carteras\_Administradas(\underline{Codigo\_Fdo: string}, Codigo\_Cartera: string)\bigskip
+\end{itemize}}
+  }
+\fi
+ 
+
+\end{document}
+
+

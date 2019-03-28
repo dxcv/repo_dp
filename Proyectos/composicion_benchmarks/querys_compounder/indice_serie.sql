@@ -1,0 +1,4 @@
+SELECT Valor
+FROM Indices_Dinamica
+WHERE Index_Id=AUTOINDICE AND Fecha>='AUTOINIC' AND Fecha<='AUTOFIN'
+ORDER BY Fecha

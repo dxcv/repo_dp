@@ -1,0 +1,383 @@
+{  
+   "Indices":[  
+      {  
+         "id":1001,
+         "ticker":"IPSA Index",
+         "nombre_bdd": "IPSA Index",
+         "moneda":"CLP"
+      },
+      {  
+         "id":1002,
+         "ticker":"CHILE65 Index",
+         "nombre_bdd": "CHILE65 Index",
+         "moneda":"CLP"
+      },
+      {  
+         "id":1003,
+         "ticker":"RACLREFI Index",
+         "nombre_bdd": "RACLREFI Index",
+         "moneda":"CLP"
+      },
+      {  
+         "id":1004,
+         "ticker":"CLICP Index",
+         "nombre_bdd": "CLICP Index",
+         "moneda":"CLP"
+      },
+      {  
+         "id":1005,
+         "ticker":"LF93TRUU Index",
+         "nombre_bdd": "LF93TRUU Index",
+         "moneda":"USD"
+      },
+      {  
+         "id":1006,
+         "ticker":"MXWO Index",
+         "nombre_bdd": "MXWO Index",
+         "moneda":"USD"
+      },
+      {  
+         "id":1007,
+         "ticker":"MXEF Index",
+         "nombre_bdd": "MXEF Index",
+         "moneda":"USD"
+      },
+      {  
+         "id":1008,
+         "ticker":"EPU US Equity",
+         "nombre_bdd": "EPU US Equity",
+         "moneda":"USD"
+      },
+      {  
+         "id":1009,
+         "ticker":"COLCAP Index",
+         "nombre_bdd": "COLCAP Index",
+         "moneda":"USD"
+      },
+      {  
+         "id":1010,
+         "ticker":"DBMMFED1 Index",
+         "nombre_bdd": "DBMMFED1 Index",
+         "moneda":"USD"
+      },
+      {  
+         "id":1011,
+         "ticker":"JGENVUUG Index",
+         "nombre_bdd": "JGENVUUG Index",
+         "moneda":"USD"
+      },
+      {  
+         "id":1012,
+         "ticker":"CTIPBN90 Index",
+         "nombre_bdd": "CTIPBN90 Index",
+         "moneda":"CLP"
+      },
+      {  
+         "id":1013,
+         "ticker":"SPX Index",
+         "nombre_bdd": "SPX Index",
+         "moneda":"USD"
+      },
+      {  
+         "id":1014,
+         "ticker":"JCMBLA Index",
+         "nombre_bdd": "JCMBLA Index",
+         "moneda":"USD"
+      },
+      {  
+         "id":1015,
+         "ticker":"MXLASC Index",
+         "nombre_bdd": "MXLASC Index",
+         "moneda":"USD"
+      },
+      {  
+         "id":1017,
+         "ticker":"IGPAS Index",
+         "nombre_bdd": "IGPAS Index",
+         "moneda":"CLP"
+      },
+      {  
+         "id":1018,
+         "ticker":"CHSMLCAP Index",
+         "nombre_bdd": "CHSMLCAP Index",
+         "moneda":"CLP"
+      },
+      {  
+         "id":1019,
+         "ticker":"MSLUCHL Index",
+         "nombre_bdd": "MSLUCHL Index",
+         "moneda":"CLP"
+      },
+      {  
+         "id":1021,
+         "ticker":"ACWI US Equity",
+         "nombre_bdd": "ACWI US Equity",
+         "moneda":"USD"
+      },
+      {  
+         "id":1023,
+         "ticker":"SPBLPGPT Index",
+         "nombre_bdd": "SPBLPGPT Index",
+         "moneda":"USD"
+      },
+      {  
+         "id":1035,
+         "ticker":"JBCDLA Index",
+         "nombre_bdd": "JBCDLA Index",
+         "moneda":"USD"
+      },
+      {  
+         "id":1036,
+         "ticker":"CHUF Index",
+         "nombre_bdd": "CHUF Index",
+         "moneda":"CLP"
+      },
+      {  
+         "id":1037,
+         "ticker":"JCBBLAIG Index",
+         "nombre_bdd": "JCBBLAIG Index",
+         "moneda":"USD"
+      },
+      {  
+         "id":1038,
+         "ticker":"JCBBLAHY Index",
+         "nombre_bdd": "JCBBLAHY Index",
+         "moneda":"USD"
+      },
+      {  
+         "id":1041,
+         "ticker":"SPMILA Index",
+         "nombre_bdd": "S&P MILA 40",
+         "moneda":"USD"
+      },
+      {  
+         "id":1042,
+         "ticker":".RFGIM U Index",
+         "nombre_bdd": "RFGIM",
+         "moneda":"USD"
+      },
+      {  
+         "id":3002,
+         "ticker":"USDEUR Curncy",
+         "nombre_bdd": "EUR",
+         "moneda":"USD"
+      },
+      {  
+         "id":1043,
+         "ticker":"SPMPSUP Index",
+         "nombre_bdd": "S&P Mila Pacific Alliance Select",
+         "moneda":"USD"
+      },
+      {  
+         "id":1044,
+         "ticker":"RIAMBKA5 Index",
+         "nombre_bdd": "RIAMBKA5 Index",
+         "moneda":"CLP"
+      },
+      {  
+         "id":1045,
+         "ticker":"RIAMBEA5 Index",
+         "nombre_bdd": "RIAMBEA5 Index",
+         "moneda":"CLP"
+      },
+      {  
+         "id":1046,
+         "ticker":"RIAMIGM2 Index",
+         "nombre_bdd":"RIAMIGM2 Index",
+         "moneda":"CLP"
+      },
+      {  
+         "id":2001,
+         "ticker":"RIAMC0AC Index",
+         "nombre_bdd":"Corp Clas A Cons",
+         "moneda":"CLP"
+      },
+      {  
+         "id":2002,
+         "ticker":"RIAMIC01 Index",
+         "nombre_bdd":"IF CLP Dur 12m",
+         "moneda":"CLP"
+      },
+      {  
+         "id":2003,
+         "ticker":"RIAMIU01 Index",
+         "nombre_bdd":"IF UF Dur 12m",
+         "moneda":"CLP"
+      },
+      {  
+         "id":2004,
+         "ticker":"RIAM0264 Index",
+         "nombre_bdd":"IMT BE Clas AAC+ Dur 4.5y-",
+         "moneda":"CLP"
+      },
+      {  
+         "id":2005,
+         "ticker":"RIAM0261 Index",
+         "nombre_bdd":"IMT BE Clas AC- Dur 4.5y-",
+         "moneda":"CLP"
+      },
+      {  
+         "id":2016,
+         "ticker":"RIAM6095 Index",
+         "nombre_bdd":"IMT Corp Clas A+ To AAA Dur 0y9y Liquido",
+         "moneda":"CLP"
+      },
+      {  
+         "id":2006,
+         "ticker":"RIAM6014 Index",
+         "nombre_bdd":"IMT Corp Clas AA- To AAA Dur 4.5y9y",
+         "moneda":"CLP"
+      },
+      {  
+         "id":2007,
+         "ticker":"RIAM6013 Index",
+         "nombre_bdd":"IMT Corp Clas BBB- To A+ Dur 4.5y9y",
+         "moneda":"CLP"
+      },
+      {  
+         "id":2042,
+         "ticker":"RIAM6151 Index",
+         "nombre_bdd":"IMT Corp Clas BBB- To A+ Liquidez 30000UF",
+         "moneda":"CLP"
+      },
+      {  
+         "id":2008,
+         "ticker":"RIAM6011 Index",
+         "nombre_bdd":"IMT Gob BCP BTP Dur 4.5y 9y",
+         "moneda":"CLP"
+      },
+      {  
+         "id":2009,
+         "ticker":"RIAM0249 Index",
+         "nombre_bdd":"IMT Gob BCP BTP Dur 4.5y-",
+         "moneda":"CLP"
+      },
+      {  
+         "id":2010,
+         "ticker":"RIAM6012 Index",
+         "nombre_bdd":"IMT Gob BCU BTU Dur 4.5y 9y",
+         "moneda":"CLP"
+      },
+      {  
+         "id":2011,
+         "ticker":"RIAM0251 Index",
+         "nombre_bdd":"IMT Gob BCU BTU Dur 4.5y-",
+         "moneda":"CLP"
+      },
+      {  
+         "id": 1047,
+         "ticker":"AFPPROE CI Equity",
+         "nombre_bdd":"AFPPROE CI Equity",
+         "moneda":"CLP"
+      },
+      {  
+         "id":1048,
+         "ticker":"AFPCUPE CI Equity",
+         "nombre_bdd":"AFPCUPE CI Equity",
+         "moneda":"CLP"
+      },
+      {  
+         "id":1049,
+         "ticker":"AFPHABE CI Equity",
+         "nombre_bdd":"AFPHABE CI Equity",
+         "moneda":"CLP"
+      },
+      {  
+         "id":1050,
+         "ticker":"AFPCAPE CI Equity",
+         "nombre_bdd":"AFPCAPE CI Equity",
+         "moneda":"CLP"
+      },
+      {  
+         "id":1051,
+         "ticker":"AFPPLAE CI Equity",
+         "nombre_bdd":"AFPPLAE CI Equity",
+         "moneda":"CLP"
+      },
+      {  
+         "id":1056,
+         "ticker":"AFPPROC CI Equity",
+         "nombre_bdd":"AFPPROC CI Equity",
+         "moneda":"CLP"
+      },
+      {  
+         "id":1057,
+         "ticker":"AFPCUPC CI Equity",
+         "nombre_bdd":"AFPCUPC CI Equity",
+         "moneda":"CLP"
+      },
+      {  
+         "id":1058,
+         "ticker":"AFPPLAC CI Equity",
+         "nombre_bdd":"AFPPLAC CI Equity",
+         "moneda":"CLP"
+      },
+      {  
+         "id":1059,
+         "ticker":"AFPMODC CI Equity",
+         "nombre_bdd":"AFPMODC CI Equity",
+         "moneda":"CLP"
+      },
+      {  
+         "id":1060,
+         "ticker":"AFPCAPC CI Equity",
+         "nombre_bdd":"AFPCAPC CI Equity",
+         "moneda":"CLP"
+      },
+      {  
+         "id":1061,
+         "ticker":"AFPHABC CI Equity",
+         "nombre_bdd":"AFPHABC CI Equity",
+         "moneda":"CLP"
+      },
+      {  
+         "id":1062,
+         "ticker":"SGIXFFC Index",
+         "nombre_bdd":"SGIXFFC Index",
+         "moneda":"USD"
+      },
+      {  
+         "id":1063,
+         "ticker":"AFPPROD CI Equity",
+         "nombre_bdd":"AFPPROD CI Equity",
+         "moneda":"CLP"
+      },
+      {  
+         "id":1064,
+         "ticker":"AFPCUPD CI Equity",
+         "nombre_bdd":"AFPCUPD CI Equity",
+         "moneda":"CLP"
+      },
+      {  
+         "id":1065,
+         "ticker":"AFPHABD CI Equity",
+         "nombre_bdd":"AFPHABD CI Equity",
+         "moneda":"CLP"
+      },
+      {  
+         "id":1066,
+         "ticker":"AFPCAPD CI Equity",
+         "nombre_bdd":"AFPCAPD CI Equity",
+         "moneda":"CLP"
+      },
+      {  
+         "id":1067,
+         "ticker":"AFPPLAD CI Equity",
+         "nombre_bdd":"AFPPLAD CI Equity",
+         "moneda":"CLP"
+      },
+      {  
+         "id":1068,
+         "ticker":"AFPMODD CI Equity",
+         "nombre_bdd":"AFPMODD CI Equity",
+         "moneda":"CLP"
+      },
+      {  
+         "id":1069,
+         "ticker":"JBCDLAIG Index",
+         "nombre_bdd":"JBCDLAIG Index",
+         "moneda":"USD"
+      }
+
+   ]
+}

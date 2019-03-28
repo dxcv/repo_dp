@@ -1,0 +1,74 @@
+c:\users\fsuarezb\documents\visual studio 2015\Projects\UpdaterCarteras\UpdaterCarteras\bin\Debug\UpdaterCarteras.exe.config
+c:\users\fsuarezb\documents\visual studio 2015\Projects\UpdaterCarteras\UpdaterCarteras\bin\Debug\UpdaterCarteras.exe
+c:\users\fsuarezb\documents\visual studio 2015\Projects\UpdaterCarteras\UpdaterCarteras\bin\Debug\UpdaterCarteras.pdb
+c:\users\fsuarezb\documents\visual studio 2015\Projects\UpdaterCarteras\UpdaterCarteras\obj\Debug\UpdaterCarteras.csprojResolveAssemblyReference.cache
+c:\users\fsuarezb\documents\visual studio 2015\Projects\UpdaterCarteras\UpdaterCarteras\obj\Debug\MainWindow.g.cs
+c:\users\fsuarezb\documents\visual studio 2015\Projects\UpdaterCarteras\UpdaterCarteras\obj\Debug\App.g.cs
+c:\users\fsuarezb\documents\visual studio 2015\Projects\UpdaterCarteras\UpdaterCarteras\obj\Debug\UpdaterCarteras_MarkupCompile.cache
+c:\users\fsuarezb\documents\visual studio 2015\Projects\UpdaterCarteras\UpdaterCarteras\obj\Debug\UpdaterCarteras_MarkupCompile.lref
+c:\users\fsuarezb\documents\visual studio 2015\Projects\UpdaterCarteras\UpdaterCarteras\obj\Debug\MainWindow.baml
+c:\users\fsuarezb\documents\visual studio 2015\Projects\UpdaterCarteras\UpdaterCarteras\obj\Debug\UpdaterCarteras.g.resources
+c:\users\fsuarezb\documents\visual studio 2015\Projects\UpdaterCarteras\UpdaterCarteras\obj\Debug\UpdaterCarteras.Properties.Resources.resources
+c:\users\fsuarezb\documents\visual studio 2015\Projects\UpdaterCarteras\UpdaterCarteras\obj\Debug\UpdaterCarteras.csproj.GenerateResource.Cache
+c:\users\fsuarezb\documents\visual studio 2015\Projects\UpdaterCarteras\UpdaterCarteras\obj\Debug\UpdaterCarteras.exe
+c:\users\fsuarezb\documents\visual studio 2015\Projects\UpdaterCarteras\UpdaterCarteras\obj\Debug\UpdaterCarteras.pdb
+C:\Users\fsuarezb\Documents\Visual Studio 2015\Projects\UpdaterCarteras\UpdaterCarteras\obj\Debug\EmisorWindow.g.cs
+C:\Users\fsuarezb\Documents\Visual Studio 2015\Projects\UpdaterCarteras\UpdaterCarteras\obj\Debug\EmisorWindow.baml
+C:\Users\fsuarezb\Documents\Visual Studio 2015\Projects\UpdaterCarteras\UpdaterCarteras\obj\Debug\DeseaEmisorWindow.g.cs
+C:\Users\fsuarezb\Documents\Visual Studio 2015\Projects\UpdaterCarteras\UpdaterCarteras\obj\Debug\DeseaEmisorWindow.baml
+C:\Users\fsuarezb\Desktop\mesagi\Proyectos\carteras_uploader\UpdaterCarteras\UpdaterCarteras\bin\Debug\UpdaterCarteras.exe.config
+C:\Users\fsuarezb\Desktop\mesagi\Proyectos\carteras_uploader\UpdaterCarteras\UpdaterCarteras\obj\Debug\UpdaterCarteras.exe
+C:\Users\fsuarezb\Desktop\mesagi\Proyectos\carteras_uploader\UpdaterCarteras\UpdaterCarteras\obj\Debug\UpdaterCarteras.pdb
+C:\Users\fsuarezb\Desktop\mesagi\Proyectos\carteras_uploader\UpdaterCarteras\UpdaterCarteras\bin\Debug\UpdaterCarteras.exe
+C:\Users\fsuarezb\Desktop\mesagi\Proyectos\carteras_uploader\UpdaterCarteras\UpdaterCarteras\bin\Debug\UpdaterCarteras.pdb
+C:\Users\fsuarezb\Desktop\mesagi\Proyectos\carteras_uploader\UpdaterCarteras\UpdaterCarteras\obj\Debug\UpdaterCarteras.csprojResolveAssemblyReference.cache
+C:\Users\fsuarezb\Desktop\mesagi\Proyectos\carteras_uploader\UpdaterCarteras\UpdaterCarteras\obj\Debug\EmisorWindow.g.cs
+C:\Users\fsuarezb\Desktop\mesagi\Proyectos\carteras_uploader\UpdaterCarteras\UpdaterCarteras\obj\Debug\MainWindow.g.cs
+C:\Users\fsuarezb\Desktop\mesagi\Proyectos\carteras_uploader\UpdaterCarteras\UpdaterCarteras\obj\Debug\App.g.cs
+C:\Users\fsuarezb\Desktop\mesagi\Proyectos\carteras_uploader\UpdaterCarteras\UpdaterCarteras\obj\Debug\UpdaterCarteras_MarkupCompile.cache
+C:\Users\fsuarezb\Desktop\mesagi\Proyectos\carteras_uploader\UpdaterCarteras\UpdaterCarteras\obj\Debug\UpdaterCarteras_MarkupCompile.lref
+C:\Users\fsuarezb\Desktop\mesagi\Proyectos\carteras_uploader\UpdaterCarteras\UpdaterCarteras\obj\Debug\EmisorWindow.baml
+C:\Users\fsuarezb\Desktop\mesagi\Proyectos\carteras_uploader\UpdaterCarteras\UpdaterCarteras\obj\Debug\MainWindow.baml
+C:\Users\fsuarezb\Desktop\mesagi\Proyectos\carteras_uploader\UpdaterCarteras\UpdaterCarteras\obj\Debug\UpdaterCarteras.g.resources
+C:\Users\fsuarezb\Desktop\mesagi\Proyectos\carteras_uploader\UpdaterCarteras\UpdaterCarteras\obj\Debug\UpdaterCarteras.Properties.Resources.resources
+C:\Users\fsuarezb\Desktop\mesagi\Proyectos\carteras_uploader\UpdaterCarteras\UpdaterCarteras\obj\Debug\UpdaterCarteras.csproj.GenerateResource.Cache
+C:\Users\fsuarezb\Desktop\mesagi\Proyectos\carteras_uploader\UpdaterCarteras\UpdaterCarteras\obj\Debug\InstrumentoWindow.g.cs
+C:\Users\fsuarezb\Desktop\mesagi\Proyectos\carteras_uploader\UpdaterCarteras\UpdaterCarteras\obj\Debug\InstrumentoWindow.baml
+C:\Users\fsuarezb\Desktop\mesagi\Proyectos\carteras_uploader\UpdaterCarteras\UpdaterCarteras\obj\Debug\FXForwardWindow.g.cs
+C:\Users\fsuarezb\Desktop\mesagi\Proyectos\carteras_uploader\UpdaterCarteras\UpdaterCarteras\obj\Debug\FXForwardWindow.baml
+C:\Users\fsuarezb\Desktop\mesagi\Proyectos\carteras_uploader\UpdaterCarteras\UpdaterCarteras\obj\Debug\EstrategiaWindow.g.cs
+C:\Users\fsuarezb\Desktop\mesagi\Proyectos\carteras_uploader\UpdaterCarteras\UpdaterCarteras\obj\Debug\EstrategiaWindow.baml
+C:\Users\blinv\Desktop\DISC\mesagi\Proyectos\carteras_uploader\UpdaterCarteras\UpdaterCarteras\bin\Debug\UpdaterCarteras.exe.config
+C:\Users\blinv\Desktop\DISC\mesagi\Proyectos\carteras_uploader\UpdaterCarteras\UpdaterCarteras\obj\Debug\UpdaterCarteras.exe
+C:\Users\blinv\Desktop\DISC\mesagi\Proyectos\carteras_uploader\UpdaterCarteras\UpdaterCarteras\obj\Debug\UpdaterCarteras.pdb
+C:\Users\blinv\Desktop\DISC\mesagi\Proyectos\carteras_uploader\UpdaterCarteras\UpdaterCarteras\bin\Debug\UpdaterCarteras.exe
+C:\Users\blinv\Desktop\DISC\mesagi\Proyectos\carteras_uploader\UpdaterCarteras\UpdaterCarteras\bin\Debug\UpdaterCarteras.pdb
+C:\Users\blinv\Desktop\DISC\mesagi\Proyectos\carteras_uploader\UpdaterCarteras\UpdaterCarteras\obj\Debug\UpdaterCarteras.csprojResolveAssemblyReference.cache
+C:\Users\blinv\Desktop\DISC\mesagi\Proyectos\carteras_uploader\UpdaterCarteras\UpdaterCarteras\obj\Debug\EmisorWindow.g.cs
+C:\Users\blinv\Desktop\DISC\mesagi\Proyectos\carteras_uploader\UpdaterCarteras\UpdaterCarteras\obj\Debug\FXForwardWindow.g.cs
+C:\Users\blinv\Desktop\DISC\mesagi\Proyectos\carteras_uploader\UpdaterCarteras\UpdaterCarteras\obj\Debug\EstrategiaWindow.g.cs
+C:\Users\blinv\Desktop\DISC\mesagi\Proyectos\carteras_uploader\UpdaterCarteras\UpdaterCarteras\obj\Debug\IndiceWindow.g.cs
+C:\Users\blinv\Desktop\DISC\mesagi\Proyectos\carteras_uploader\UpdaterCarteras\UpdaterCarteras\obj\Debug\InstrumentoWindow.g.cs
+C:\Users\blinv\Desktop\DISC\mesagi\Proyectos\carteras_uploader\UpdaterCarteras\UpdaterCarteras\obj\Debug\MainWindow.g.cs
+C:\Users\blinv\Desktop\DISC\mesagi\Proyectos\carteras_uploader\UpdaterCarteras\UpdaterCarteras\obj\Debug\App.g.cs
+C:\Users\blinv\Desktop\DISC\mesagi\Proyectos\carteras_uploader\UpdaterCarteras\UpdaterCarteras\obj\Debug\UpdaterCarteras_MarkupCompile.cache
+C:\Users\blinv\Desktop\DISC\mesagi\Proyectos\carteras_uploader\UpdaterCarteras\UpdaterCarteras\obj\Debug\UpdaterCarteras_MarkupCompile.lref
+C:\Users\blinv\Desktop\DISC\mesagi\Proyectos\carteras_uploader\UpdaterCarteras\UpdaterCarteras\obj\Debug\EmisorWindow.baml
+C:\Users\blinv\Desktop\DISC\mesagi\Proyectos\carteras_uploader\UpdaterCarteras\UpdaterCarteras\obj\Debug\FXForwardWindow.baml
+C:\Users\blinv\Desktop\DISC\mesagi\Proyectos\carteras_uploader\UpdaterCarteras\UpdaterCarteras\obj\Debug\EstrategiaWindow.baml
+C:\Users\blinv\Desktop\DISC\mesagi\Proyectos\carteras_uploader\UpdaterCarteras\UpdaterCarteras\obj\Debug\IndiceWindow.baml
+C:\Users\blinv\Desktop\DISC\mesagi\Proyectos\carteras_uploader\UpdaterCarteras\UpdaterCarteras\obj\Debug\InstrumentoWindow.baml
+C:\Users\blinv\Desktop\DISC\mesagi\Proyectos\carteras_uploader\UpdaterCarteras\UpdaterCarteras\obj\Debug\MainWindow.baml
+C:\Users\blinv\Desktop\DISC\mesagi\Proyectos\carteras_uploader\UpdaterCarteras\UpdaterCarteras\obj\Debug\UpdaterCarteras.g.resources
+C:\Users\blinv\Desktop\DISC\mesagi\Proyectos\carteras_uploader\UpdaterCarteras\UpdaterCarteras\obj\Debug\UpdaterCarteras.Properties.Resources.resources
+C:\Users\blinv\Desktop\DISC\mesagi\Proyectos\carteras_uploader\UpdaterCarteras\UpdaterCarteras\obj\Debug\UpdaterCarteras.csproj.GenerateResource.Cache
+C:\Users\blinv\Desktop\DISC\mesagi\Proyectos\carteras_uploader\UpdaterCarteras\UpdaterCarteras\bin\Debug\Bloomberglp.Blpapi.dll
+C:\Users\blinv\Desktop\DISC\mesagi\Proyectos\carteras_uploader\UpdaterCarteras\UpdaterCarteras\bin\Debug\Bloomberglp.Blpapi.xml
+C:\Users\blinv\Desktop\DISC\mesagi\Proyectos\carteras_uploader\UpdaterCarteras\UpdaterCarteras\obj\Debug\WaitWindow.g.cs
+C:\Users\blinv\Desktop\DISC\mesagi\Proyectos\carteras_uploader\UpdaterCarteras\UpdaterCarteras\obj\Debug\WaitWindow.baml
+C:\Users\fsuarezb\Desktop\mesagi\Proyectos\carteras_uploader\UpdaterCarteras\UpdaterCarteras\bin\Debug\Bloomberglp.Blpapi.dll
+C:\Users\fsuarezb\Desktop\mesagi\Proyectos\carteras_uploader\UpdaterCarteras\UpdaterCarteras\bin\Debug\Bloomberglp.Blpapi.xml
+C:\Users\fsuarezb\Desktop\mesagi\Proyectos\carteras_uploader\UpdaterCarteras\UpdaterCarteras\obj\Debug\IndiceWindow.g.cs
+C:\Users\fsuarezb\Desktop\mesagi\Proyectos\carteras_uploader\UpdaterCarteras\UpdaterCarteras\obj\Debug\WaitWindow.g.cs
+C:\Users\fsuarezb\Desktop\mesagi\Proyectos\carteras_uploader\UpdaterCarteras\UpdaterCarteras\obj\Debug\IndiceWindow.baml
+C:\Users\fsuarezb\Desktop\mesagi\Proyectos\carteras_uploader\UpdaterCarteras\UpdaterCarteras\obj\Debug\WaitWindow.baml

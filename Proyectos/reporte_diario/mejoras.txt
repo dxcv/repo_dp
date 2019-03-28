@@ -1,0 +1,1 @@
+- no considera vencimientos en feriados (si considera vencimientos sabados y domingos)

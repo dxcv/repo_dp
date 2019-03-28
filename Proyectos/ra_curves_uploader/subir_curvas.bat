@@ -1,0 +1,1 @@
+python ra_curves_uploader.py %*

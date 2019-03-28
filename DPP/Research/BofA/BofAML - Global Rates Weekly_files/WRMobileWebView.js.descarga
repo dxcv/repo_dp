@@ -1,0 +1,65 @@
+/*	Author : Chandra Shekar Daadi
+
+SRCMMobileNativeJSBridgeLib.js lib provides below functionalities:
+1. Execute Objective-c (Native ios ) code from Java Script.
+2. Execute Java Script code from Objective-c.
+3. Listen to Java Script events(page loaded event) in Objective-c code.
+4. Listen to Native events(application did resign/become active) in Java Script code.
+
+
+SRCMMobileNativeJSBridgeLib.js lib needs to be included in the Xcode project to facilitate the communication between Objective-c and Java Script Code.
+
+*/
+
+var WRMobileWebView = {
+
+    BridgeCall: function (bcall) {
+        if (bcall) {
+            var BRIDGE_ROOT = "SRCMMobileApp://SRCM/RL";
+            var bridgeurl = BRIDGE_ROOT + bcall;
+            var iframe = document.createElement("IFRAME");
+            iframe.style = "display:none; height:0px; width:0px;";
+            iframe.src = bridgeurl;
+            document.body.appendChild(iframe);
+            iframe.parentNode.removeChild(iframe);
+            iframe = null;
+        }
+    },
+
+    // sample usecase: BridgeCallWithCallback('showspinner', function() {
+    // //spinner done});
+    BridgeCallWithCallback: function (bridgecall_action, bridgecall_params,
+			callbackFunction) {
+        try {
+            callback_event = "bridgecallevent" + this.g_bridgecall_counter++;
+
+            $('body').unbind(callback_event).bind(callback_event, {
+                callback: callbackFunction
+            }, function (event, msg) {
+                event.data.callback(msg); // call handler
+                $(this).unbind(event)
+            } // unbind event
+			);
+            this.BridgeCall(bridgecall_action + '?' + 'callback='
+					+ callback_event + '&' + bridgecall_params);
+
+            // if (this.g_bridgecall_counter >= 100)
+            // this.g_bridgecall_counter = 0;
+        } catch (exception) {
+            var message = (exception.message != undefined) ? exception.message
+					: exception;
+            this.Log('uhh oh! ' + ' : ' + message);
+        }
+    },
+    onLoadReportTab: function () {
+    	 displayBackToTop();
+        initLeftSidebar();
+    },
+    onScrollReportTab: function () {
+    }
+
+};
+
+  
+   
+    

@@ -1,0 +1,46 @@
+﻿<html xmlns:MSHelp="http://msdn.microsoft.com/mshelp"><head><META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=UTF-8" /><title>ProviderSession Constructor (options, eventHandler, dispatcher)</title><link rel="stylesheet" type="text/css" href="../styles/presentation.css" /><script type="text/javascript" src="../scripts/script_prototype.js"> </script><script type="text/javascript" src="../scripts/EventUtilities.js"> </script><script type="text/javascript" src="../scripts/StyleUtilities.js"> </script><script type="text/javascript" src="../scripts/SplitScreen.js"> </script><script type="text/javascript" src="../scripts/ElementCollection.js"> </script><script type="text/javascript" src="../scripts/MemberFilter.js"> </script><script type="text/javascript" src="../scripts/CollapsibleSection.js"> </script><script type="text/javascript" src="../scripts/LanguageFilter.js"> </script><script type="text/javascript" src="../scripts/CookieDataStore.js"> </script><meta name="file" content="M_Bloomberglp_Blpapi_ProviderSession__ctor_3" /><xml xmlns:msxsl="urn:schemas-microsoft-com:xslt"><MSHelp:Attr Name="AssetID" Value="M:Bloomberglp.Blpapi.ProviderSession.#ctor(Bloomberglp.Blpapi.SessionOptions,Bloomberglp.Blpapi.ProviderEventHandler,Bloomberglp.Blpapi.EventDispatcher)" /><MSHelp:Keyword Index="A" Term="M:Bloomberglp.Blpapi.ProviderSession.#ctor(Bloomberglp.Blpapi.SessionOptions,Bloomberglp.Blpapi.ProviderEventHandler,Bloomberglp.Blpapi.EventDispatcher)" /><MSHelp:Keyword Index="A" Term="frlrfBloomberglpBlpapiProviderSessionClassctorTopic" /><MSHelp:Keyword Index="K" Term="ProviderSession constructor" /><MSHelp:Keyword Index="F" Term="ProviderSession" /><MSHelp:Keyword Index="F" Term="ProviderSession.ProviderSession" /><MSHelp:Keyword Index="F" Term="Bloomberglp.Blpapi.ProviderSession.ProviderSession" /><MSHelp:Attr Name="TopicType" Value="apiref" /><MSHelp:Attr Name="TopicType" Value="kbSyntax" /><MSHelp:Attr Name="APIType" Value="Managed" /><MSHelp:Attr Name="APILocation" Value="Bloomberglp.Blpapi.dll" /><MSHelp:Attr Name="APIName" Value="Bloomberglp.Blpapi.ProviderSession..ctor" /><MSHelp:Attr Name="Locale" Value="en-us" /><MSHelp:Attr Name="Abstract" Value="Constructs a Session using the optionally specified 'options', the optionally specified 'eventHandler' and the optionally specified 'eventDispatcher'. See the SessionOptions documentation for details on what can be specified in the 'options'. If 'eve ..." /></xml></head><body><img id="copyImage" style="display:none; height:0; width:0;" src="../icons/copycode.gif" alt="Copy image" title="Copy image" /><img id="copyHoverImage" style="display:none; height:0; width:0;" src="../icons/copycodeHighlight.gif" alt="CopyHover image" title="CopyHover image" /><div id="control"><span class="productTitle">Bloomberg API for .NET</span><br /><span class="topicTitle">ProviderSession Constructor (options, eventHandler, dispatcher)</span><br /><div id="toolbar"><span id="chickenFeet"><a href="R_Project_bloomberglp_dotnet_api.htm">Namespaces</a> ► <a href="N_Bloomberglp_Blpapi.htm">Bloomberglp.Blpapi</a> ► <a href="T_Bloomberglp_Blpapi_ProviderSession.htm">ProviderSession</a> ► <span class="selflink">ProviderSession(SessionOptions, ProviderEventHandler, EventDispatcher)</span></span><span id="languageFilter"><select id="languageSelector" onchange="var names = this.value.split(' '); toggleVisibleLanguage(names[1]); lfc.switchLanguage(names[0]); store.set('lang',this.value); store.save();"><option value="CSharp cs">C#</option><option value="VisualBasic vb">Visual Basic</option><option value="ManagedCPlusPlus cpp">Visual C++</option></select></span></div></div><div id="main"><span style="color: DarkGray"></span><div class="summary">
+             Constructs a Session using the optionally specified 'options', the
+             optionally specified 'eventHandler' and the optionally specified
+             'eventDispatcher'.
+            <p>
+            See the SessionOptions documentation for details on what can be specified
+             in the 'options'.
+             </p><p>
+             If 'eventHandler' is not null then this Session will operation in
+             asynchronous mode, otherwise the Session will operate in synchronous
+             mode.
+             </p><p>
+             If 'eventDispatcher' is null then the Session will create a default
+             EventDispatcher for this Session which will use a single thread for
+             dispatching events. For more control over event dispatching a specific
+             instance of EventDispatcher can be supplied. This can be used to share a
+             single EventDispatcher amongst multiple Session objects.
+             </p><p>
+             If an 'eventDispatcher' is supplied which uses more than one thread the
+             Session will ensure that events which should be ordered are passed to
+             callbacks in a correct order. For example, partial response to a request
+            or updates to a single subscription.
+            If 'eventHandler' is null and the 'eventDispatcher' is not null an
+            exception is thrown.
+            Each EventDispatcher uses its own thread or pool of threads so if you
+            want to ensure that a session which receives very large messages and
+            takes a long time to process them does not delay a session that receives
+            small messages and processes each one very quickly then give each one a
+            separate EventDispatcher.
+             </p></div><div class="section"><div class="sectionTitle" onclick="toggleSection(this.parentNode)"><img src="../icons/collapse_all.gif" /> Declaration Syntax</div><div class="sectionContent"><div id="syntaxSection"><table class="filter"><tr class="tabs" id="syntaxTabs"><td class="tab" x-lang="CSharp" onclick="toggleClass('syntaxTabs','x-lang','CSharp','activeTab','tab'); toggleStyle('syntaxBlocks','x-lang','CSharp','display','block','none');">C#</td><td class="tab" x-lang="VisualBasic" onclick="toggleClass('syntaxTabs','x-lang','VisualBasic','activeTab','tab'); toggleStyle('syntaxBlocks','x-lang','VisualBasic','display','block','none');">Visual Basic</td><td class="tab" x-lang="ManagedCPlusPlus" onclick="toggleClass('syntaxTabs','x-lang','ManagedCPlusPlus','activeTab','tab'); toggleStyle('syntaxBlocks','x-lang','ManagedCPlusPlus','display','block','none');">Visual C++</td></tr></table><div id="syntaxBlocks"><div class="code" x-lang="CSharp"><pre xml:space="preserve">
+<span class="keyword">public</span> <span class="identifier">ProviderSession</span>(
+	<span class="identifier">SessionOptions</span> <span class="parameter">options</span>,
+	<span class="identifier">ProviderEventHandler</span> <span class="parameter">eventHandler</span>,
+	<span class="identifier">EventDispatcher</span> <span class="parameter">dispatcher</span>
+)</pre></div><div class="code" x-lang="VisualBasic"><pre xml:space="preserve">
+<span class="keyword">Public</span> <span class="keyword">Sub</span> <span class="identifier">New</span> ( 
+	<span class="parameter">options</span> <span class="keyword">As</span> <span class="identifier">SessionOptions</span>,
+	<span class="parameter">eventHandler</span> <span class="keyword">As</span> <span class="identifier">ProviderEventHandler</span>,
+	<span class="parameter">dispatcher</span> <span class="keyword">As</span> <span class="identifier">EventDispatcher</span>
+)</pre></div><div class="code" x-lang="ManagedCPlusPlus"><pre xml:space="preserve">
+<span class="keyword">public</span>:
+<span class="identifier">ProviderSession</span>(
+	<span class="identifier">SessionOptions</span>^ <span class="parameter">options</span>, 
+	<span class="identifier">ProviderEventHandler</span>^ <span class="parameter">eventHandler</span>, 
+	<span class="identifier">EventDispatcher</span>^ <span class="parameter">dispatcher</span>
+)</pre></div></div></div></div></div><div id="parameters"><div class="section"><div class="sectionTitle" onclick="toggleSection(this.parentNode)"><img src="../icons/collapse_all.gif" /> Parameters</div><div class="sectionContent"><dl paramName="options"><dt><span class="parameter">options</span> (<a href="T_Bloomberglp_Blpapi_SessionOptions.htm">SessionOptions</a>)</dt><dd /></dl><dl paramName="eventHandler"><dt><span class="parameter">eventHandler</span> (<a href="T_Bloomberglp_Blpapi_ProviderEventHandler.htm">ProviderEventHandler</a>)</dt><dd /></dl><dl paramName="dispatcher"><dt><span class="parameter">dispatcher</span> (<a href="T_Bloomberglp_Blpapi_EventDispatcher.htm">EventDispatcher</a>)</dt><dd /></dl></div></div></div><div id="footer"><p />© BLOOMBERG L.P. MAKES NO WARRANTY, EXPRESS OR IMPLIED, AS TO RESULTS TO BE ATTAINED FROM THE USE OF THE SERVICES, FUNCTIONALITIES, OR DATA FROM AND OF THE BLOOMBERG API, OR EQUIPMENT BY WHICH THE SERVICES OR FUNCTIONS ARE PROVIDED, AND THERE ARE NO EXPRESS OR IMPLIED WARRANTIES OF MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE OR USE.</div><p>Assembly: <span sdata="assembly">Bloomberglp.Blpapi</span> (Module: Bloomberglp.Blpapi.dll) Version: 3.8.10.1</p></div></body></html>

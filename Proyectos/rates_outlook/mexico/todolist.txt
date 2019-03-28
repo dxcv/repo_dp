@@ -1,0 +1,14 @@
+Falta:
+- restar el spread al implied path
+- estimar la curva cero cash a partir de los puntos de bloomberg que hay que auditar
+- Carry and roll
+- TPM neural de mexico
+- Estimación de term premia de mexico
+- term premia histórico
+
+Una vez terminado lo anterior:
+
+- ver si se puede lograr mejor ajuste de la swap
+- ver el tema de que falta descontar un dia por que el swap es T+1
+- Ojo que como pagan cupones altos las duraciones no son altas a pesar de los largos vencimientos.
+- Para el futuro hay que hacer la curva UDI

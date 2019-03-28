@@ -1,0 +1,1 @@
+python lux_uploader.py %*

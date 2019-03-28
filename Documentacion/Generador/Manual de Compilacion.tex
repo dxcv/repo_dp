@@ -1,0 +1,208 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage[english, spanish]{babel}
+\usepackage[dvips]{graphics}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{fullpage}
+\usepackage{epsfig}
+\usepackage{multicol}
+\usepackage{listings}
+\usepackage{wasysym}
+
+\usepackage[usenames,dvipsnames]{xcolor} 
+\usepackage{hyperref} 
+\definecolor{linkcolour}{rgb}{0,0.2,0.6} 
+\hypersetup{colorlinks,breaklinks,urlcolor=linkcolour,linkcolor=linkcolour} 
+\newcommand{\parallelsum}{\mathbin{\!/\mkern-5mu/\!}}
+
+
+
+\parindent 0pt
+\parskip 0pt
+
+\begin{document}
+
+\includegraphics[width=4.6cm, height=1.7cm]{logor.png}
+\vspace*{-1.55cm}
+
+\hspace*{1.4 cm}
+ \hspace*{2.9 cm}
+ {\footnotesize
+ \begin{tabular}{l}
+  \sc IM Trust - Credicorp Capital\\
+  \sc Administradora General de Fondos \\
+  \sc Mesa de Gestión de Inversiones  \\
+  \sc Diego Steinsapir  \\
+  \vspace{15\baselineskip}\mbox{}
+  \vspace{-3mm}\mbox{}
+ \end{tabular}
+}
+
+ \bigskip
+
+\vspace*{5mm}
+\begin{center}
+{\today} \\
+\vspace{3mm}
+{\Large\bf Generación de Excel para Reporte de Seguimiento} \\
+\vspace{2mm}
+\end{center}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%MANENER FIJO ARRIBA%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Introducción}
+Este documento detalla paso a paso cómo se compiló la versión actual de Generador.exe. Su compilación es necesaria para poder distrubuir el programa de manera sencilla sin la necesidad de instalar librerías ni programas de forma que su uso sea lo más simple posible. El método de compilación aquí plasmado no es el único posible y cualquier otra forma de generar el archivo ejecutable a partir del código original es igualmente válida. Sin embargo, debido a las dificultades que hubo a la hora de compilar, este manual puede ser de gran ayuda para quien desee generar una nueva versión del archivo ejecutable.
+
+\section{Materiales}
+Para la compilación se necesita cumplir con las siguientes condiciones:
+\begin{itemize}
+\item Equipo corriendo Windows 10 (Con Windows 7 la librería no funcionó)
+\item Python 3.5.2 instalado
+\item \href{www.PyInstaller.org}{PyInstaller} Versión 3.2 para Python 3.5
+\item Todas las dependencias de 'Libreria\_Fdo' instaladas
+\item Código Fuente
+\end{itemize}
+\textbf{\underline{IMPORTANTE}}: Si se hace la compilación con Anaconda instalado (y probablemente con otros frameworks también), el compilador incluye muchas librerías innecesarias y hacen más peasdo el programa. Además, resulta más complicado hacerlo funcionar, pero eventualmente se debiese poder de igual manera.
+
+\section{Compilación Paso a Paso}
+\begin{enumerate}
+\item En generador.py, borrar la siguiente linea:
+\begin{lstlisting}
+15	sys.path.insert(0, '../libreria/')
+\end{lstlisting}
+
+\item En carpeta generador\_presentacion\_gestionactivos (o donde se encuentre el código fuente)crear una copia de 'Libreria\_Fdo' \footnote{05-01-2016: Este paso debiese cambiar cuando se afine el proceso de compilación}
+\item En la copia generada de 'Libreria\_Fdo', se debe borrar la siguiente linea: 
+\begin{lstlisting}
+8	from pptx import Presentation
+\end{lstlisting}
+\item Abrir consola y navegar hasta directorio de generador.py.
+\item En consola escribir el siguiente comando:
+\begin{lstlisting}
+pyinstaller --onefile .\generador.py
+\end{lstlisting}
+\item Si no hay problemas, PyInstaller ejecutará hasta generar dos carpetas y un archivo llamado "generador.spec" en la misma carpeta. 
+\item Borrar carpetas 'build' y 'dist' generadas y abrir archivo 'generador.spec' y modificar la siguiente linea:
+\begin{lstlisting}
+5	a = Analysis([ ...
+        	     hiddenimports=[],
+ 			...
+ 			)
+\end{lstlisting}
+a: 
+\begin{lstlisting}
+5	a = Analysis([ ...
+    	         hiddenimports=['_mssql'],
+ 			...
+ 			)
+\end{lstlisting}
+\item Después del objeto Analysis, agregar el siguiente código (sacado de \href{http://stackoverflow.com/questions/11322538/including-a-directory-using-pyinstaller}{esta pregunta})
+\begin{lstlisting}
+def extra_datas(mydir):
+   def rec_glob(p, files):
+       import os
+       import glob
+       for d in glob.glob(p):
+           if os.path.isfile(d):
+               files.append(d)
+           rec_glob("%s/*" % d, files)
+   files = []
+   rec_glob("%s/*" % mydir, files)
+   extra_datas = []
+   for f in files:
+       extra_datas.append((f, f, 'DATA'))
+
+   return extra_datas
+###########################################
+
+# append the 'data' dir
+a.datas += extra_datas('queries_generador')
+\end{lstlisting}
+\item Ejecutar ahora en consola el siguiente comando:
+\begin{lstlisting}
+pyinstaller --onefile .\generador.spec
+\end{lstlisting}
+Notar que se utiliza la terminacion '.spec' en lugar de '.py'
+
+\item Terminada la ejecución, navegar por consola a carpeta dist y ejecutar el programa con el siguiente comando:
+\begin{lstlisting}
+.\generador.exe
+\end{lstlisting}
+\item El programa intentará ejecutar. Si no ejecuta, el error más probable es del tipo "ImportError: no module named 'XXXXX'", que implica que el compilador no utilizó esa dependencia al ejecutar y por lo tanto el programa no puede correr. En estos casos se debe modificar la misma sección de antes del archivo generador.spec de la siguiente manera:
+\begin{lstlisting}
+a = Analysis([ ...
+             hiddenimports=['_mssql'],
+ 		...
+ 		)
+\end{lstlisting}
+a:
+\begin{lstlisting}
+a = Analysis([ ...
+             hiddenimports=['_mssql', 'XXXXX'],
+ 		...
+ 		)
+\end{lstlisting}
+\item Borrar nuevamente carpetas "dist" y "build". Repetir los últimos 3 pasos hasta que el programa ejecute de manera correcta
+\end{enumerate}
+
+\section{Anexo: generador.spec}
+A continuación, se adjunta un código de generador.spec generado por PyInstaller:
+\begin{lstlisting}
+# -*- mode: python -*-
+
+block_cipher = None
+
+a = Analysis(['generador.py'],
+             pathex=['C:\\Users\\diego\\Desktop\\IM Trust\\
+             		generador_presentacion_gestionactivos'],
+             binaries=None,
+             datas=[],
+             hiddenimports=['_mssql'],
+             hookspath=[],
+             runtime_hooks=[],
+             excludes=[],
+             win_no_prefer_redirects=False,
+             win_private_assemblies=False,
+             cipher=block_cipher)
+
+def extra_datas(mydir):
+   def rec_glob(p, files):
+       import os
+       import glob
+       for d in glob.glob(p):
+           if os.path.isfile(d):
+               files.append(d)
+           rec_glob("%s/*" % d, files)
+   files = []
+   rec_glob("%s/*" % mydir, files)
+   extra_datas = []
+   for f in files:
+       extra_datas.append((f, f, 'DATA'))
+
+   return extra_datas
+###########################################
+
+# append the 'data' dir
+a.datas += extra_datas('queries_generador')
+
+# a.datas += [("benchmarkName.sql", "C:\\Users\\diego\\Desktop
+\\IM Trust\\generador_presentacion_gestionactivos\\queries_generador
+\\benchmarkName.sql", "DATA")]
+
+pyz = PYZ(a.pure, a.zipped_data,
+             cipher=block_cipher)
+exe = EXE(pyz,
+          a.scripts,
+          a.binaries,
+          a.zipfiles,
+          a.datas,
+          name='generador',
+          debug=False,
+          strip=False,
+          upx=True,
+          console=True )
+
+\end{lstlisting}
+
+\end{document}
+
+

@@ -1,0 +1,4 @@
+Select fecha,  avg(SpreadAvg) as spread 
+from Indices_corporativosrfl 
+where   [WHERE]  
+group by   fecha

@@ -1,0 +1,22 @@
+﻿<Window x:Class="UpdaterCarteras.EstrategiaWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:UpdaterCarteras"
+        mc:Ignorable="d"
+        Title="Asociar Estrategia"  Height="350" Width="525" Background="#FF2B2B2B" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" Closed="Window_Closed">
+    <Canvas HorizontalAlignment="Left" Height="296" Margin="10,10,0,0" VerticalAlignment="Top" Width="498">
+        <Label x:Name="Label_Codigo_Emi" Content="Codigo Emisor" Canvas.Top="105" Foreground="#FFD4D4D4" Height="30" Width="100" RenderTransformOrigin="0.143,1.767" Canvas.Left="119"/>
+        <Label x:Name="Label_Codigo_Ins" Content="Codigo Instrumento" Canvas.Top="152" Foreground="#FFD4D4D4" Height="30" Width="130" RenderTransformOrigin="0.143,1.767" Canvas.Left="119"/>
+        <Label x:Name="Label_Estrategia" Content="Estrategia" Canvas.Top="197" Foreground="#FFD4D4D4" Height="30" Width="130" RenderTransformOrigin="0.143,1.767" Canvas.Left="119"/>
+        <Label x:Name="Label_Codigo_Fdo" Content="Codigo Fondo" Canvas.Top="61" Foreground="#FFD4D4D4" Height="30" Width="130" RenderTransformOrigin="0.143,1.767" Canvas.Left="119"/>
+        <Label x:Name="Label_Bienvenida" Content="Asocie su nueva estrategia" Canvas.Left="170" Canvas.Top="10" Foreground="#FFD4D4D4" Height="30" Width="190"/>
+        <ComboBox x:Name="ComboBox_Codigo_Emi" Canvas.Left="249" Canvas.Top="105" Width="120" IsEditable="True" SelectionChanged="ComboBox_Codigo_Emi_SelectionChanged"/>
+        <ComboBox x:Name="ComboBox_Codigo_Ins" Canvas.Left="249" Canvas.Top="152" Width="120" IsEditable="True" RenderTransformOrigin="0.583,-0.136"/>
+        <ComboBox x:Name="ComboBox_Estrategia" Canvas.Left="249" Canvas.Top="197" Width="120" IsEditable="True" RenderTransformOrigin="0.458,2.864"/>
+        <ComboBox x:Name="ComboBox_Codigo_Fdo" Canvas.Left="249" Canvas.Top="61" Width="120" IsEditable="True" SelectionChanged="ComboBox_Codigo_Fdo_SelectionChanged"/>
+        <Button x:Name="Boton_Upload" Content="Subir" Canvas.Left="215" Canvas.Top="250" Width="90" Height="25" Click="Boton_Upload_Click" RenderTransformOrigin="0.111,1.2"/>
+    </Canvas>
+
+</Window>
